@@ -98,7 +98,7 @@ function clearBuffers() {
 }
 
 async function loadManifest(instrument) {
-  const response = await fetch(`/assets/audio/${instrument}/manifest.json`);
+  const response = await fetch(`assets/audio/${instrument}/manifest.json`);
   if (!response.ok) {
     throw new Error("Audio files are missing");
   }

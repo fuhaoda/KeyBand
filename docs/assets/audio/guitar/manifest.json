@@ -371,7 +371,7 @@
       "gainApplied": 0.9994886696,
       "onsetSecBefore": 0.00059,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m038.m4a"
+      "file": "assets/audio/guitar/m038.m4a"
     },
     {
       "id": "m039",
@@ -382,7 +382,7 @@
       "gainApplied": 0.9993649866,
       "onsetSecBefore": 0.000567,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m039.m4a"
+      "file": "assets/audio/guitar/m039.m4a"
     },
     {
       "id": "m040",
@@ -393,7 +393,7 @@
       "gainApplied": 1.0043929658,
       "onsetSecBefore": 0.000544,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m040.m4a"
+      "file": "assets/audio/guitar/m040.m4a"
     },
     {
       "id": "m041",
@@ -404,7 +404,7 @@
       "gainApplied": 0.9996917636,
       "onsetSecBefore": 0.002971,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m041.m4a"
+      "file": "assets/audio/guitar/m041.m4a"
     },
     {
       "id": "m042",
@@ -415,7 +415,7 @@
       "gainApplied": 1.0000215072,
       "onsetSecBefore": 0.003946,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m042.m4a"
+      "file": "assets/audio/guitar/m042.m4a"
     },
     {
       "id": "m043",
@@ -426,7 +426,7 @@
       "gainApplied": 1.0013477536,
       "onsetSecBefore": 0.003968,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m043.m4a"
+      "file": "assets/audio/guitar/m043.m4a"
     },
     {
       "id": "m044",
@@ -437,7 +437,7 @@
       "gainApplied": 0.9989835693,
       "onsetSecBefore": 0.003968,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m044.m4a"
+      "file": "assets/audio/guitar/m044.m4a"
     },
     {
       "id": "m045",
@@ -448,7 +448,7 @@
       "gainApplied": 0.9996963554,
       "onsetSecBefore": 0.003991,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m045.m4a"
+      "file": "assets/audio/guitar/m045.m4a"
     },
     {
       "id": "m046",
@@ -459,7 +459,7 @@
       "gainApplied": 0.9988835892,
       "onsetSecBefore": 0.003968,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m046.m4a"
+      "file": "assets/audio/guitar/m046.m4a"
     },
     {
       "id": "m047",
@@ -470,7 +470,7 @@
       "gainApplied": 0.9996400037,
       "onsetSecBefore": 0.003946,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m047.m4a"
+      "file": "assets/audio/guitar/m047.m4a"
     },
     {
       "id": "m048",
@@ -481,7 +481,7 @@
       "gainApplied": 1.0050667128,
       "onsetSecBefore": 0.004014,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m048.m4a"
+      "file": "assets/audio/guitar/m048.m4a"
     },
     {
       "id": "m049",
@@ -492,7 +492,7 @@
       "gainApplied": 0.9907684326,
       "onsetSecBefore": 0.000726,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m049.m4a"
+      "file": "assets/audio/guitar/m049.m4a"
     },
     {
       "id": "m050",
@@ -503,7 +503,7 @@
       "gainApplied": 1.0056494583,
       "onsetSecBefore": 0.003855,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m050.m4a"
+      "file": "assets/audio/guitar/m050.m4a"
     },
     {
       "id": "m051",
@@ -514,7 +514,7 @@
       "gainApplied": 1.0035296605,
       "onsetSecBefore": 0.003923,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m051.m4a"
+      "file": "assets/audio/guitar/m051.m4a"
     },
     {
       "id": "m052",
@@ -525,7 +525,7 @@
       "gainApplied": 0.9987602099,
       "onsetSecBefore": 0.003991,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m052.m4a"
+      "file": "assets/audio/guitar/m052.m4a"
     },
     {
       "id": "m053",
@@ -536,7 +536,7 @@
       "gainApplied": 1.0044256963,
       "onsetSecBefore": 0.000658,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m053.m4a"
+      "file": "assets/audio/guitar/m053.m4a"
     },
     {
       "id": "m054",
@@ -547,7 +547,7 @@
       "gainApplied": 0.9980732117,
       "onsetSecBefore": 0.00415,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m054.m4a"
+      "file": "assets/audio/guitar/m054.m4a"
     },
     {
       "id": "m055",
@@ -558,7 +558,7 @@
       "gainApplied": 1.000390722,
       "onsetSecBefore": 0.004104,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m055.m4a"
+      "file": "assets/audio/guitar/m055.m4a"
     },
     {
       "id": "m056",
@@ -569,7 +569,7 @@
       "gainApplied": 1.0002581911,
       "onsetSecBefore": 0.003923,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m056.m4a"
+      "file": "assets/audio/guitar/m056.m4a"
     },
     {
       "id": "m057",
@@ -580,7 +580,7 @@
       "gainApplied": 0.9980046713,
       "onsetSecBefore": 0.002086,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m057.m4a"
+      "file": "assets/audio/guitar/m057.m4a"
     },
     {
       "id": "m058",
@@ -591,7 +591,7 @@
       "gainApplied": 0.9999722397,
       "onsetSecBefore": 0.002154,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m058.m4a"
+      "file": "assets/audio/guitar/m058.m4a"
     },
     {
       "id": "m059",
@@ -602,7 +602,7 @@
       "gainApplied": 0.9995732224,
       "onsetSecBefore": 0.002313,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m059.m4a"
+      "file": "assets/audio/guitar/m059.m4a"
     },
     {
       "id": "m060",
@@ -613,7 +613,7 @@
       "gainApplied": 0.9995724542,
       "onsetSecBefore": 0.002086,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m060.m4a"
+      "file": "assets/audio/guitar/m060.m4a"
     },
     {
       "id": "m061",
@@ -624,7 +624,7 @@
       "gainApplied": 0.9974742272,
       "onsetSecBefore": 0.002268,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m061.m4a"
+      "file": "assets/audio/guitar/m061.m4a"
     },
     {
       "id": "m062",
@@ -635,7 +635,7 @@
       "gainApplied": 1.0044513834,
       "onsetSecBefore": 0.002585,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m062.m4a"
+      "file": "assets/audio/guitar/m062.m4a"
     },
     {
       "id": "m063",
@@ -646,7 +646,7 @@
       "gainApplied": 0.9980169014,
       "onsetSecBefore": 0.00127,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m063.m4a"
+      "file": "assets/audio/guitar/m063.m4a"
     },
     {
       "id": "m064",
@@ -657,7 +657,7 @@
       "gainApplied": 1.0054369315,
       "onsetSecBefore": 0.002585,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m064.m4a"
+      "file": "assets/audio/guitar/m064.m4a"
     },
     {
       "id": "m065",
@@ -668,7 +668,7 @@
       "gainApplied": 1.0046855991,
       "onsetSecBefore": 0.003061,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m065.m4a"
+      "file": "assets/audio/guitar/m065.m4a"
     },
     {
       "id": "m066",
@@ -679,7 +679,7 @@
       "gainApplied": 0.9894214365,
       "onsetSecBefore": 0.003946,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m066.m4a"
+      "file": "assets/audio/guitar/m066.m4a"
     },
     {
       "id": "m067",
@@ -690,7 +690,7 @@
       "gainApplied": 1.0089467815,
       "onsetSecBefore": 0.002698,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m067.m4a"
+      "file": "assets/audio/guitar/m067.m4a"
     },
     {
       "id": "m068",
@@ -701,7 +701,7 @@
       "gainApplied": 0.997544561,
       "onsetSecBefore": 0.002358,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m068.m4a"
+      "file": "assets/audio/guitar/m068.m4a"
     },
     {
       "id": "m069",
@@ -712,7 +712,7 @@
       "gainApplied": 1.0021228595,
       "onsetSecBefore": 0.002653,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m069.m4a"
+      "file": "assets/audio/guitar/m069.m4a"
     },
     {
       "id": "m070",
@@ -723,7 +723,7 @@
       "gainApplied": 0.9971185685,
       "onsetSecBefore": 0.000317,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m070.m4a"
+      "file": "assets/audio/guitar/m070.m4a"
     },
     {
       "id": "m071",
@@ -734,7 +734,7 @@
       "gainApplied": 1.0013793492,
       "onsetSecBefore": 0.000839,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m071.m4a"
+      "file": "assets/audio/guitar/m071.m4a"
     },
     {
       "id": "m072",
@@ -745,7 +745,7 @@
       "gainApplied": 0.9993705435,
       "onsetSecBefore": 0.002971,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m072.m4a"
+      "file": "assets/audio/guitar/m072.m4a"
     },
     {
       "id": "m073",
@@ -756,7 +756,7 @@
       "gainApplied": 1.0051700606,
       "onsetSecBefore": 0.001361,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m073.m4a"
+      "file": "assets/audio/guitar/m073.m4a"
     },
     {
       "id": "m074",
@@ -767,7 +767,7 @@
       "gainApplied": 1.0049235369,
       "onsetSecBefore": 0.0,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m074.m4a"
+      "file": "assets/audio/guitar/m074.m4a"
     },
     {
       "id": "m075",
@@ -778,7 +778,7 @@
       "gainApplied": 1.0090538161,
       "onsetSecBefore": 0.001224,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m075.m4a"
+      "file": "assets/audio/guitar/m075.m4a"
     },
     {
       "id": "m076",
@@ -789,7 +789,7 @@
       "gainApplied": 0.9963114843,
       "onsetSecBefore": 0.002971,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m076.m4a"
+      "file": "assets/audio/guitar/m076.m4a"
     },
     {
       "id": "m077",
@@ -800,7 +800,7 @@
       "gainApplied": 1.0049224576,
       "onsetSecBefore": 0.003741,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m077.m4a"
+      "file": "assets/audio/guitar/m077.m4a"
     },
     {
       "id": "m078",
@@ -811,7 +811,7 @@
       "gainApplied": 0.9998053455,
       "onsetSecBefore": 0.003787,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m078.m4a"
+      "file": "assets/audio/guitar/m078.m4a"
     },
     {
       "id": "m079",
@@ -822,7 +822,7 @@
       "gainApplied": 0.9998830435,
       "onsetSecBefore": 0.002766,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m079.m4a"
+      "file": "assets/audio/guitar/m079.m4a"
     },
     {
       "id": "m080",
@@ -833,7 +833,7 @@
       "gainApplied": 1.0119451301,
       "onsetSecBefore": 0.003741,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m080.m4a"
+      "file": "assets/audio/guitar/m080.m4a"
     },
     {
       "id": "m081",
@@ -844,7 +844,7 @@
       "gainApplied": 1.0027479414,
       "onsetSecBefore": 0.00322,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m081.m4a"
+      "file": "assets/audio/guitar/m081.m4a"
     },
     {
       "id": "m082",
@@ -855,7 +855,7 @@
       "gainApplied": 1.0008221855,
       "onsetSecBefore": 0.003923,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m082.m4a"
+      "file": "assets/audio/guitar/m082.m4a"
     },
     {
       "id": "m083",
@@ -866,7 +866,7 @@
       "gainApplied": 1.0000804274,
       "onsetSecBefore": 0.003764,
       "onsetSecAfter": 0.004,
-      "file": "/assets/audio/guitar/m083.m4a"
+      "file": "assets/audio/guitar/m083.m4a"
     }
   ],
   "sizeMb": 1.1406,
