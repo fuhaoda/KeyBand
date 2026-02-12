@@ -55,7 +55,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--manifest",
-        default="web/assets/audio/piano/manifest.json",
+        default="docs/assets/audio/piano/manifest.json",
         help="Path to manifest.json",
     )
     parser.add_argument("--report-dir", default="reports", help="Report output directory")

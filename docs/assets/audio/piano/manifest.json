@@ -95,7 +95,7 @@
       "gainApplied": 1.0601567951,
       "onsetSecBefore": 0.229002,
       "onsetSecAfter": 0.004104,
-      "file": "/assets/audio/piano/m036.m4a"
+      "file": "assets/audio/piano/m036.m4a"
     },
     {
       "id": "m037",
@@ -106,7 +106,7 @@
       "gainApplied": 1.1055539821,
       "onsetSecBefore": 0.342857,
       "onsetSecAfter": 0.004082,
-      "file": "/assets/audio/piano/m037.m4a"
+      "file": "assets/audio/piano/m037.m4a"
     },
     {
       "id": "m038",
@@ -117,7 +117,7 @@
       "gainApplied": 1.144877387,
       "onsetSecBefore": 0.433537,
       "onsetSecAfter": 0.004059,
-      "file": "/assets/audio/piano/m038.m4a"
+      "file": "assets/audio/piano/m038.m4a"
     },
     {
       "id": "m039",
@@ -128,7 +128,7 @@
       "gainApplied": 1.1944678694,
       "onsetSecBefore": 0.330794,
       "onsetSecAfter": 0.004218,
-      "file": "/assets/audio/piano/m039.m4a"
+      "file": "assets/audio/piano/m039.m4a"
     },
     {
       "id": "m040",
@@ -139,7 +139,7 @@
       "gainApplied": 0.9987215329,
       "onsetSecBefore": 0.489433,
       "onsetSecAfter": 0.004195,
-      "file": "/assets/audio/piano/m040.m4a"
+      "file": "assets/audio/piano/m040.m4a"
     },
     {
       "id": "m041",
@@ -150,7 +150,7 @@
       "gainApplied": 0.6674894619,
       "onsetSecBefore": 0.490136,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m041.m4a"
+      "file": "assets/audio/piano/m041.m4a"
     },
     {
       "id": "m042",
@@ -161,7 +161,7 @@
       "gainApplied": 0.9987215329,
       "onsetSecBefore": 0.395918,
       "onsetSecAfter": 0.004059,
-      "file": "/assets/audio/piano/m042.m4a"
+      "file": "assets/audio/piano/m042.m4a"
     },
     {
       "id": "m043",
@@ -172,7 +172,7 @@
       "gainApplied": 1.0123473061,
       "onsetSecBefore": 0.446168,
       "onsetSecAfter": 0.004127,
-      "file": "/assets/audio/piano/m043.m4a"
+      "file": "assets/audio/piano/m043.m4a"
     },
     {
       "id": "m044",
@@ -183,7 +183,7 @@
       "gainApplied": 0.8574887945,
       "onsetSecBefore": 0.705737,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m044.m4a"
+      "file": "assets/audio/piano/m044.m4a"
     },
     {
       "id": "m045",
@@ -194,7 +194,7 @@
       "gainApplied": 1.0396456871,
       "onsetSecBefore": 0.588163,
       "onsetSecAfter": 0.004036,
-      "file": "/assets/audio/piano/m045.m4a"
+      "file": "assets/audio/piano/m045.m4a"
     },
     {
       "id": "m046",
@@ -205,7 +205,7 @@
       "gainApplied": 0.9182624223,
       "onsetSecBefore": 0.559002,
       "onsetSecAfter": 0.004172,
-      "file": "/assets/audio/piano/m046.m4a"
+      "file": "assets/audio/piano/m046.m4a"
     },
     {
       "id": "m047",
@@ -216,7 +216,7 @@
       "gainApplied": 0.8631002112,
       "onsetSecBefore": 0.647868,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m047.m4a"
+      "file": "assets/audio/piano/m047.m4a"
     },
     {
       "id": "m048",
@@ -227,7 +227,7 @@
       "gainApplied": 0.7629003504,
       "onsetSecBefore": 0.581723,
       "onsetSecAfter": 0.004036,
-      "file": "/assets/audio/piano/m048.m4a"
+      "file": "assets/audio/piano/m048.m4a"
     },
     {
       "id": "m049",
@@ -238,7 +238,7 @@
       "gainApplied": 0.984250082,
       "onsetSecBefore": 0.654966,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m049.m4a"
+      "file": "assets/audio/piano/m049.m4a"
     },
     {
       "id": "m050",
@@ -249,7 +249,7 @@
       "gainApplied": 1.166358944,
       "onsetSecBefore": 0.527596,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m050.m4a"
+      "file": "assets/audio/piano/m050.m4a"
     },
     {
       "id": "m051",
@@ -260,7 +260,7 @@
       "gainApplied": 1.2585360404,
       "onsetSecBefore": 0.34449,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m051.m4a"
+      "file": "assets/audio/piano/m051.m4a"
     },
     {
       "id": "m052",
@@ -271,7 +271,7 @@
       "gainApplied": 0.8495452916,
       "onsetSecBefore": 0.764626,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m052.m4a"
+      "file": "assets/audio/piano/m052.m4a"
     },
     {
       "id": "m053",
@@ -282,7 +282,7 @@
       "gainApplied": 0.7329487301,
       "onsetSecBefore": 0.926735,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m053.m4a"
+      "file": "assets/audio/piano/m053.m4a"
     },
     {
       "id": "m054",
@@ -293,7 +293,7 @@
       "gainApplied": 0.9004054314,
       "onsetSecBefore": 0.378571,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m054.m4a"
+      "file": "assets/audio/piano/m054.m4a"
     },
     {
       "id": "m055",
@@ -304,7 +304,7 @@
       "gainApplied": 1.0465826544,
       "onsetSecBefore": 0.499297,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m055.m4a"
+      "file": "assets/audio/piano/m055.m4a"
     },
     {
       "id": "m056",
@@ -315,7 +315,7 @@
       "gainApplied": 1.5659342846,
       "onsetSecBefore": 0.816259,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m056.m4a"
+      "file": "assets/audio/piano/m056.m4a"
     },
     {
       "id": "m057",
@@ -326,7 +326,7 @@
       "gainApplied": 1.4438834112,
       "onsetSecBefore": 0.767075,
       "onsetSecAfter": 0.004036,
-      "file": "/assets/audio/piano/m057.m4a"
+      "file": "assets/audio/piano/m057.m4a"
     },
     {
       "id": "m058",
@@ -337,7 +337,7 @@
       "gainApplied": 1.3823171529,
       "onsetSecBefore": 0.260748,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m058.m4a"
+      "file": "assets/audio/piano/m058.m4a"
     },
     {
       "id": "m059",
@@ -348,7 +348,7 @@
       "gainApplied": 1.2994352418,
       "onsetSecBefore": 0.594263,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m059.m4a"
+      "file": "assets/audio/piano/m059.m4a"
     },
     {
       "id": "m060",
@@ -359,7 +359,7 @@
       "gainApplied": 0.8684696402,
       "onsetSecBefore": 0.548254,
       "onsetSecAfter": 0.004036,
-      "file": "/assets/audio/piano/m060.m4a"
+      "file": "assets/audio/piano/m060.m4a"
     },
     {
       "id": "m061",
@@ -370,7 +370,7 @@
       "gainApplied": 0.7916477813,
       "onsetSecBefore": 0.584785,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m061.m4a"
+      "file": "assets/audio/piano/m061.m4a"
     },
     {
       "id": "m062",
@@ -381,7 +381,7 @@
       "gainApplied": 0.971619145,
       "onsetSecBefore": 0.722381,
       "onsetSecAfter": 0.003946,
-      "file": "/assets/audio/piano/m062.m4a"
+      "file": "assets/audio/piano/m062.m4a"
     },
     {
       "id": "m063",
@@ -392,7 +392,7 @@
       "gainApplied": 1.0751057345,
       "onsetSecBefore": 0.596893,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m063.m4a"
+      "file": "assets/audio/piano/m063.m4a"
     },
     {
       "id": "m064",
@@ -403,7 +403,7 @@
       "gainApplied": 1.0250703877,
       "onsetSecBefore": 0.701474,
       "onsetSecAfter": 0.004059,
-      "file": "/assets/audio/piano/m064.m4a"
+      "file": "assets/audio/piano/m064.m4a"
     },
     {
       "id": "m065",
@@ -414,7 +414,7 @@
       "gainApplied": 0.7949452424,
       "onsetSecBefore": 0.620862,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m065.m4a"
+      "file": "assets/audio/piano/m065.m4a"
     },
     {
       "id": "m066",
@@ -425,7 +425,7 @@
       "gainApplied": 0.9982582507,
       "onsetSecBefore": 0.414626,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m066.m4a"
+      "file": "assets/audio/piano/m066.m4a"
     },
     {
       "id": "m067",
@@ -436,7 +436,7 @@
       "gainApplied": 0.8771303721,
       "onsetSecBefore": 0.692381,
       "onsetSecAfter": 0.003946,
-      "file": "/assets/audio/piano/m067.m4a"
+      "file": "assets/audio/piano/m067.m4a"
     },
     {
       "id": "m068",
@@ -447,7 +447,7 @@
       "gainApplied": 0.6241321821,
       "onsetSecBefore": 0.549819,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m068.m4a"
+      "file": "assets/audio/piano/m068.m4a"
     },
     {
       "id": "m069",
@@ -458,7 +458,7 @@
       "gainApplied": 0.9338488249,
       "onsetSecBefore": 0.281293,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m069.m4a"
+      "file": "assets/audio/piano/m069.m4a"
     },
     {
       "id": "m070",
@@ -469,7 +469,7 @@
       "gainApplied": 1.3836475954,
       "onsetSecBefore": 0.461293,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m070.m4a"
+      "file": "assets/audio/piano/m070.m4a"
     },
     {
       "id": "m071",
@@ -480,7 +480,7 @@
       "gainApplied": 0.9247524545,
       "onsetSecBefore": 0.498617,
       "onsetSecAfter": 0.004059,
-      "file": "/assets/audio/piano/m071.m4a"
+      "file": "assets/audio/piano/m071.m4a"
     },
     {
       "id": "m072",
@@ -491,7 +491,7 @@
       "gainApplied": 0.619435274,
       "onsetSecBefore": 0.241111,
       "onsetSecAfter": 0.005057,
-      "file": "/assets/audio/piano/m072.m4a"
+      "file": "assets/audio/piano/m072.m4a"
     },
     {
       "id": "m073",
@@ -502,7 +502,7 @@
       "gainApplied": 0.86628005,
       "onsetSecBefore": 0.673628,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m073.m4a"
+      "file": "assets/audio/piano/m073.m4a"
     },
     {
       "id": "m074",
@@ -513,7 +513,7 @@
       "gainApplied": 0.9653576814,
       "onsetSecBefore": 0.438231,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m074.m4a"
+      "file": "assets/audio/piano/m074.m4a"
     },
     {
       "id": "m075",
@@ -524,7 +524,7 @@
       "gainApplied": 0.7408495733,
       "onsetSecBefore": 0.680952,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m075.m4a"
+      "file": "assets/audio/piano/m075.m4a"
     },
     {
       "id": "m076",
@@ -535,7 +535,7 @@
       "gainApplied": 0.608766805,
       "onsetSecBefore": 0.628435,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m076.m4a"
+      "file": "assets/audio/piano/m076.m4a"
     },
     {
       "id": "m077",
@@ -546,7 +546,7 @@
       "gainApplied": 0.6973297456,
       "onsetSecBefore": 0.770544,
       "onsetSecAfter": 0.003968,
-      "file": "/assets/audio/piano/m077.m4a"
+      "file": "assets/audio/piano/m077.m4a"
     },
     {
       "id": "m078",
@@ -557,7 +557,7 @@
       "gainApplied": 0.7667422644,
       "onsetSecBefore": 0.479705,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m078.m4a"
+      "file": "assets/audio/piano/m078.m4a"
     },
     {
       "id": "m079",
@@ -568,7 +568,7 @@
       "gainApplied": 1.1472271151,
       "onsetSecBefore": 0.476735,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m079.m4a"
+      "file": "assets/audio/piano/m079.m4a"
     },
     {
       "id": "m080",
@@ -579,7 +579,7 @@
       "gainApplied": 1.2849275293,
       "onsetSecBefore": 0.382517,
       "onsetSecAfter": 0.003991,
-      "file": "/assets/audio/piano/m080.m4a"
+      "file": "assets/audio/piano/m080.m4a"
     },
     {
       "id": "m081",
@@ -590,7 +590,7 @@
       "gainApplied": 1.3753682452,
       "onsetSecBefore": 0.389524,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m081.m4a"
+      "file": "assets/audio/piano/m081.m4a"
     },
     {
       "id": "m082",
@@ -601,7 +601,7 @@
       "gainApplied": 1.2895712922,
       "onsetSecBefore": 0.458685,
       "onsetSecAfter": 0.004014,
-      "file": "/assets/audio/piano/m082.m4a"
+      "file": "assets/audio/piano/m082.m4a"
     },
     {
       "id": "m083",
@@ -612,7 +612,7 @@
       "gainApplied": 0.896158772,
       "onsetSecBefore": 0.635261,
       "onsetSecAfter": 0.004104,
-      "file": "/assets/audio/piano/m083.m4a"
+      "file": "assets/audio/piano/m083.m4a"
     }
   ]
 }

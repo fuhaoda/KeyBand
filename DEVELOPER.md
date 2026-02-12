@@ -17,20 +17,20 @@ python3 scripts/build_piano_samples.py --clean
 
 Outputs:
 
-- `web/assets/audio/piano/*.m4a`
-- `web/assets/audio/piano/manifest.json`
+- `docs/assets/audio/piano/*.m4a`
+- `docs/assets/audio/piano/manifest.json`
 - `reports/piano_alignment_report_<buildId>.md` (plus `.json` and `.csv`)
 
 ## Guitar Pack
 
 The guitar pack is rebuilt in-place from its own manifest using the KeyBand alignment logic.
 
-- `web/assets/audio/guitar/`
+- `docs/assets/audio/guitar/`
 
 Rebuild command:
 
 ```bash
-python3 scripts/rebuild_pack_from_manifest.py --manifest web/assets/audio/guitar/manifest.json
+python3 scripts/rebuild_pack_from_manifest.py --manifest docs/assets/audio/guitar/manifest.json
 ```
 
 ## Alignment Validation
@@ -38,8 +38,8 @@ python3 scripts/rebuild_pack_from_manifest.py --manifest web/assets/audio/guitar
 You can validate any pack against the 8-point gates:
 
 ```bash
-python3 scripts/validate_audio_pack.py --manifest web/assets/audio/piano/manifest.json
-python3 scripts/validate_audio_pack.py --manifest web/assets/audio/guitar/manifest.json
+python3 scripts/validate_audio_pack.py --manifest docs/assets/audio/piano/manifest.json
+python3 scripts/validate_audio_pack.py --manifest docs/assets/audio/guitar/manifest.json
 ```
 
 ## Quality Gates ("8 Standards")
@@ -58,8 +58,8 @@ The alignment logic uses the same 8-point gates across instruments:
 ## Repo Layout
 
 - `scripts/build_piano_samples.py` - alignment + normalization + report generator
-- `web/assets/audio/piano/` - output audio pack + `manifest.json`
-- `web/assets/audio/guitar/` - guitar audio pack + `manifest.json`
+- `docs/assets/audio/piano/` - output audio pack + `manifest.json`
+- `docs/assets/audio/guitar/` - guitar audio pack + `manifest.json`
 - `reports/` - build reports (md/json/csv)
 - `docker/` - Nginx config for static hosting
 - `docker-compose.yml` - one-command deploy

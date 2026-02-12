@@ -119,7 +119,7 @@ class SampleMetrics:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", default="web/assets/audio/piano", help="Output directory")
+    parser.add_argument("--output-dir", default="docs/assets/audio/piano", help="Output directory")
     parser.add_argument("--cache-dir", default=".cache/piano_mis_ff", help="Source cache directory")
     parser.add_argument(
         "--source-dir",
