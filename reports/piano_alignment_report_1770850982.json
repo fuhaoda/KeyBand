@@ -1,0 +1,227 @@
+{
+  "buildId": 1770850982,
+  "instrument": "piano",
+  "source": "University of Iowa MIS Piano (ff)",
+  "sourceUrl": "https://theremin.music.uiowa.edu/sound%20files/MIS/Piano_Other/piano",
+  "range": {
+    "minMidi": 36,
+    "maxMidi": 83,
+    "minNote": "C2",
+    "maxNote": "B5"
+  },
+  "args": {
+    "duration": 8.0,
+    "sampleRate": 44100,
+    "bitrate": "192k",
+    "targetMb": 10.0,
+    "maxTotalMb": 20.0
+  },
+  "alignment": {
+    "onsetDetection": {
+      "thresholdRatio": 0.08,
+      "thresholdFloor": 0.003,
+      "minStreakSamples": 96,
+      "envelopeSmoothMs": 3
+    },
+    "startPrerollMs": 4,
+    "fadeInMs": 1,
+    "fadeOutMs": 80
+  },
+  "normalization": {
+    "method": "full_window_dominant_rms_with_neighbor_smoothing_and_peak_guard",
+    "targetBlendedRms": 0.0134217498,
+    "targetPeakLinear": 0.9,
+    "globalPeakScale": 1.0,
+    "gainClamp": [
+      0.6,
+      3.0
+    ],
+    "gainSmoothing": {
+      "lambda": 0.08,
+      "passes": 1
+    }
+  },
+  "qualityGates": {
+    "onsetSpreadP10P90Ms": 3.0,
+    "onsetMaxMs": 8.0,
+    "fullRmsSpreadDb": 2.0,
+    "attackRmsSpreadDb": 3.2,
+    "midRmsSpreadDb": 7.0,
+    "maxAdjacentGainStepDb": 3.5,
+    "maxPeakLinear": 0.9,
+    "maxMappingErrorCents": 10.0,
+    "maxTotalMb": 20.0
+  },
+  "before": {
+    "onsetP10Ms": 339.2381,
+    "onsetP90Ms": 735.0544,
+    "onsetSpreadP10P90Ms": 395.8163,
+    "onsetMaxMs": 926.7347,
+    "fullRmsSpreadDb": 6.4891,
+    "attackRmsSpreadDb": 7.2631,
+    "midRmsSpreadDb": 7.6571,
+    "maxPeakLinear": 0.516433
+  },
+  "after": {
+    "onsetP10Ms": 3.9909,
+    "onsetP90Ms": 4.1111,
+    "onsetSpreadP10P90Ms": 0.1202,
+    "onsetMaxMs": 5.0567,
+    "fullRmsSpreadDb": 0.9539,
+    "attackRmsSpreadDb": 3.086,
+    "midRmsSpreadDb": 6.758,
+    "maxPeakLinear": 0.331605,
+    "sizeMb": 6.4427,
+    "maxAdjacentGainStepDb": 3.5
+  },
+  "beforePercentiles": {
+    "onsetSec": {
+      "min": 0.22900226757369616,
+      "p10": 0.3392380952380952,
+      "p50": 0.5379251700680272,
+      "p90": 0.7350544217687077,
+      "max": 0.926734693877551
+    },
+    "peak": {
+      "min": 0.1410631388425827,
+      "p10": 0.17986468225717545,
+      "p50": 0.23919449001550674,
+      "p90": 0.369029971957207,
+      "max": 0.51643306016922
+    },
+    "fullRms": {
+      "min": 0.006543707458137391,
+      "p10": 0.011830012601625604,
+      "p50": 0.01585513608333481,
+      "p90": 0.024971114658121144,
+      "max": 0.03574600662560095
+    },
+    "attackRms": {
+      "min": 0.02928448215947296,
+      "p10": 0.04774323469448832,
+      "p50": 0.066515318382078,
+      "p90": 0.11017059338093377,
+      "max": 0.16945413382745306
+    },
+    "midRms": {
+      "min": 0.006360229488863705,
+      "p10": 0.01337884658453736,
+      "p50": 0.02312460819901206,
+      "p90": 0.03230513745548303,
+      "max": 0.04201368065426374
+    }
+  },
+  "afterPercentiles": {
+    "onsetSec": {
+      "min": 0.003945578231292517,
+      "p10": 0.00399092970521542,
+      "p50": 0.004013605442176871,
+      "p90": 0.004111111111111111,
+      "max": 0.0050566893424036285
+    },
+    "peak": {
+      "min": 0.11529415845870972,
+      "p10": 0.13295231610536576,
+      "p50": 0.16234660893678665,
+      "p90": 0.22087923884391786,
+      "max": 0.3316050171852112
+    },
+    "fullRms": {
+      "min": 0.005275886116396797,
+      "p10": 0.010829618994225371,
+      "p50": 0.011246359965640716,
+      "p90": 0.012086765796619069,
+      "max": 0.02334438483743445
+    },
+    "attackRms": {
+      "min": 0.023591048424228434,
+      "p10": 0.03963054045801047,
+      "p50": 0.04802182742891095,
+      "p90": 0.0565364197337687,
+      "max": 0.11066250479234746
+    },
+    "midRms": {
+      "min": 0.005154100153371642,
+      "p10": 0.009640785724083785,
+      "p50": 0.015555349174474976,
+      "p90": 0.020989991744104968,
+      "max": 0.02263399393989366
+    }
+  },
+  "mappingWorst": {
+    "gender": "female",
+    "key": "B",
+    "degree": 7,
+    "targetHz": 932.236419,
+    "sampleId": "m082",
+    "midi": 82,
+    "sampleHz": 932.327523,
+    "centsError": -0.169179
+  },
+  "mappingWorstAbsCents": 0.169179,
+  "issues": [],
+  "pass": true,
+  "quality": {
+    "spreadMethod": {
+      "onsetSec": "p10_p90",
+      "fullRms": "p10_p90",
+      "attackRms": "p10_p90",
+      "midRms": "p10_p90"
+    },
+    "onsetSpreadP10P90Ms": 0.1202,
+    "onsetMaxMs": 5.0567,
+    "fullRmsSpreadDb": 0.9539,
+    "attackRmsSpreadDb": 3.086,
+    "midRmsSpreadDb": 6.758,
+    "maxAdjacentGainStepDb": 3.5,
+    "maxPeakLinear": 0.331605,
+    "thresholds": {
+      "onsetSpreadP10P90Ms": 3.0,
+      "onsetMaxMs": 8.0,
+      "fullRmsSpreadDb": 2.0,
+      "attackRmsSpreadDb": 3.2,
+      "midRmsSpreadDb": 7.0,
+      "maxAdjacentGainStepDb": 3.5,
+      "maxPeakLinear": 0.9,
+      "maxMappingErrorCents": 10.0,
+      "maxTotalMb": 20.0
+    }
+  },
+  "outliers": {
+    "onsetLate": [
+      "m072",
+      "m039",
+      "m040",
+      "m046",
+      "m043"
+    ],
+    "peakHigh": [
+      "m071",
+      "m082",
+      "m070",
+      "m068",
+      "m083"
+    ],
+    "fullRmsOdd": [
+      "m079",
+      "m071",
+      "m068",
+      "m060",
+      "m076"
+    ],
+    "attackRmsOdd": [
+      "m071",
+      "m079",
+      "m036",
+      "m068",
+      "m076"
+    ],
+    "midRmsOdd": [
+      "m079",
+      "m082",
+      "m077",
+      "m071",
+      "m072"
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KeyBand Piano</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">KeyBand</p>
+          <h1>Numbered Keyboard Piano</h1>
+          <p class="subtitle">
+            Play 1-7 with real piano samples. Shift = Oct+, Ctrl = Oct-.
+            Sustain with 8/9 or I/O.
+          </p>
+          <div class="status">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Loading…</span>
+          </div>
+          <div class="cta-row">
+            <button id="audioButton" class="primary">Start Audio</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Controls</h2>
+          <div class="control-row">
+            <label for="instrumentSelect">Instrument</label>
+            <select id="instrumentSelect">
+              <option value="piano">Piano</option>
+              <option value="guitar">Guitar</option>
+            </select>
+          </div>
+          <div class="control-row">
+            <label for="genderSelect">Voice</label>
+            <select id="genderSelect">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="control-row">
+            <label for="keySelect">Key</label>
+            <select id="keySelect">
+              <option value="C">C</option>
+              <option value="C#/Db">C#/Db</option>
+              <option value="D">D</option>
+              <option value="D#/Eb">D#/Eb</option>
+              <option value="E">E</option>
+              <option value="F">F</option>
+              <option value="F#/Gb">F#/Gb</option>
+              <option value="G">G</option>
+              <option value="G#/Ab">G#/Ab</option>
+              <option value="A">A</option>
+              <option value="A#/Bb">A#/Bb</option>
+              <option value="B">B</option>
+            </select>
+          </div>
+          <div class="control-row">
+            <label>Touch Octave</label>
+            <div class="octave-buttons">
+              <button id="octDownButton" class="ghost">Oct-</button>
+              <span id="octaveLabel">0</span>
+              <button id="octUpButton" class="ghost">Oct+</button>
+            </div>
+          </div>
+          <div class="control-row">
+            <label>Pedal</label>
+            <div class="pedal-indicator">
+              <span class="pill" id="sustainPill">Sustain Off</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="keyboard">
+        <div class="keyboard-title">
+          <h2>Keypad</h2>
+          <p>Keyboard: 1-7 or Numpad 1-7. Alt: M , . J K L U.</p>
+        </div>
+        <div class="keypad-grid">
+          <button class="key" data-degree="7">7</button>
+          <button class="key sustain" data-sustain="true">Sustain 8/9</button>
+          <button class="key" data-degree="4">4</button>
+          <button class="key" data-degree="5">5</button>
+          <button class="key" data-degree="6">6</button>
+          <button class="key" data-degree="1">1</button>
+          <button class="key" data-degree="2">2</button>
+          <button class="key" data-degree="3">3</button>
+        </div>
+        <div class="alt-row">
+          <div>Alt keys: M = 1, , = 2, . = 3, J = 4, K = 5, L = 6, U = 7</div>
+          <div>Sustain keys: 8/9 or I/O</div>
+        </div>
+      </section>
+
+      <section class="help">
+        <h2>Tips</h2>
+        <ul>
+          <li>Hold Shift while pressing a note to go up one octave.</li>
+          <li>Hold Ctrl while pressing a note to go down one octave.</li>
+          <li>Hold Sustain to let notes ring.</li>
+          <li>Click "Start Audio" once before playing.</li>
+        </ul>
+      </section>
+    </div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

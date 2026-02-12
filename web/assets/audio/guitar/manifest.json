@@ -1,0 +1,889 @@
+{
+  "version": 1,
+  "instrument": "guitar",
+  "buildId": 1770852735,
+  "source": "University of Iowa MIS Guitar (ff mono ranges)",
+  "sourceUrl": "https://theremin.music.uiowa.edu/sound%20files/MIS/Piano_Other/guitar",
+  "sourceFiles": [
+    "Guitar.ff.sulE.E2B2.mono.aif",
+    "Guitar.ff.sulE.C3B3.mono.aif",
+    "Guitar.ff.sulA.A2B2.mono.aif",
+    "Guitar.ff.sulA.C3B3.mono.aif",
+    "Guitar.ff.sulA.C4E4.mono.aif",
+    "Guitar.ff.sulD.D3B3.mono.aif",
+    "Guitar.ff.sulD.C4Ab4.mono.aif",
+    "Guitar.ff.sulG.G3B3.mono.aif",
+    "Guitar.ff.sulG.C4B4.mono.aif",
+    "Guitar.ff.sulG.C5Db5.mono.aif",
+    "Guitar.ff.sulB.B3.mono.aif",
+    "Guitar.ff.sulB.C4B4.mono.aif",
+    "Guitar.ff.sulB.C5Gb5.mono.aif",
+    "Guitar.ff.sul_E.E4B4.mono.aif",
+    "Guitar.ff.sul_E.C5Bb5.mono.aif"
+  ],
+  "durationMs": 1500,
+  "sampleRate": 44100,
+  "codec": "aac",
+  "bitrate": "160k",
+  "sampleHzRange": [
+    70.0,
+    1000.0
+  ],
+  "alignment": {
+    "method": "peak_ratio_threshold_consecutive_streak_trim_with_preroll",
+    "thresholdRatio": 0.08,
+    "thresholdFloor": 0.003,
+    "minStreakSamples": 96,
+    "envelopeSmoothMs": 3,
+    "startPrerollMs": 4,
+    "fadeInMs": 1,
+    "fadeOutMs": 80
+  },
+  "normalization": {
+    "method": "full_window_dominant_rms_with_neighbor_smoothing_and_peak_guard",
+    "targetBlendedRms": 0.0324813607,
+    "targetPeakLinear": 0.9,
+    "globalPeakScale": 1.0,
+    "gainClamp": [
+      0.6,
+      3.0
+    ],
+    "gainSmoothing": {
+      "lambda": 0.08,
+      "passes": 1
+    },
+    "gainRange": [
+      0.98942144,
+      1.01194513
+    ]
+  },
+  "quality": {
+    "spreadMethod": {
+      "onsetMs": "p10_p90",
+      "fullRms": "p10_p90",
+      "attackRms": "p10_p90",
+      "midRms": "p10_p90"
+    },
+    "onsetSpreadP10P90Ms": 0.0,
+    "onsetMaxMs": 4.0,
+    "fullRmsSpreadDb": 0.2292,
+    "attackRmsSpreadDb": 1.6763,
+    "midRmsSpreadDb": 3.2406,
+    "maxAdjacentGainStepDb": 0.1697,
+    "maxPeakLinear": 0.436869,
+    "thresholds": {
+      "onsetSpreadP10P90Ms": 3.0,
+      "onsetMaxMs": 8.0,
+      "fullRmsSpreadDb": 2.0,
+      "attackRmsSpreadDb": 3.2,
+      "midRmsSpreadDb": 7.0,
+      "maxAdjacentGainStepDb": 3.5,
+      "maxPeakLinear": 0.9,
+      "maxMappingErrorCents": 10.0,
+      "maxTotalMb": 20.0
+    }
+  },
+  "fillEdges": {
+    "strategy": "offline_pitch_shift_from_nearest_native",
+    "mapping": {
+      "38": 40,
+      "39": 40,
+      "83": 82
+    }
+  },
+  "sampleCount": 46,
+  "targetFrequencyCount": 35,
+  "maxMappingErrorCents": 0.169179,
+  "worstMapping": {
+    "targetHz": 293.636072,
+    "sampleId": "m062",
+    "midi": 62,
+    "sampleHz": 293.664768,
+    "centsError": -0.169179
+  },
+  "nativeSelections": {
+    "82": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 63.669655,
+      "estimatedMidi": 81.710987,
+      "rms": 0.10678124
+    },
+    "81": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 56.673615,
+      "estimatedMidi": 80.824283,
+      "rms": 0.10273994
+    },
+    "80": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 50.529781,
+      "estimatedMidi": 79.721978,
+      "rms": 0.08159465
+    },
+    "79": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 44.885624,
+      "estimatedMidi": 78.751979,
+      "rms": 0.06479019
+    },
+    "78": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 38.75201,
+      "estimatedMidi": 77.768425,
+      "rms": 0.05099111
+    },
+    "77": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 32.26796,
+      "estimatedMidi": 76.734967,
+      "rms": 0.04747365
+    },
+    "76": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 25.258812,
+      "estimatedMidi": 75.821876,
+      "rms": 0.06153666
+    },
+    "75": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 19.469469,
+      "estimatedMidi": 74.820383,
+      "rms": 0.05129182
+    },
+    "74": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 12.981688,
+      "estimatedMidi": 73.821447,
+      "rms": 0.05875209
+    },
+    "73": {
+      "source": "Guitar.ff.sul_E.C5Bb5.mono.aif",
+      "onsetSec": 6.49751,
+      "estimatedMidi": 72.776484,
+      "rms": 0.06486491
+    },
+    "72": {
+      "source": "Guitar.ff.sulB.C5Gb5.mono.aif",
+      "onsetSec": 0.0,
+      "estimatedMidi": 71.83584,
+      "rms": 0.05929134
+    },
+    "71": {
+      "source": "Guitar.ff.sulB.C4B4.mono.aif",
+      "onsetSec": 80.054779,
+      "estimatedMidi": 71.042284,
+      "rms": 0.05099436
+    },
+    "70": {
+      "source": "Guitar.ff.sulB.C4B4.mono.aif",
+      "onsetSec": 74.935562,
+      "estimatedMidi": 69.99514,
+      "rms": 0.04838001
+    },
+    "69": {
+      "source": "Guitar.ff.sul_E.E4B4.mono.aif",
+      "onsetSec": 35.66951,
+      "estimatedMidi": 68.788881,
+      "rms": 0.04692722
+    },
+    "68": {
+      "source": "Guitar.ff.sul_E.E4B4.mono.aif",
+      "onsetSec": 29.023115,
+      "estimatedMidi": 67.874464,
+      "rms": 0.05115623
+    },
+    "67": {
+      "source": "Guitar.ff.sulG.C4B4.mono.aif",
+      "onsetSec": 60.608364,
+      "estimatedMidi": 66.894486,
+      "rms": 0.10769704
+    },
+    "66": {
+      "source": "Guitar.ff.sulG.C4B4.mono.aif",
+      "onsetSec": 53.333752,
+      "estimatedMidi": 65.910512,
+      "rms": 0.10825431
+    },
+    "65": {
+      "source": "Guitar.ff.sulG.C4B4.mono.aif",
+      "onsetSec": 45.834835,
+      "estimatedMidi": 64.901797,
+      "rms": 0.10652129
+    },
+    "64": {
+      "source": "Guitar.ff.sulD.C4Ab4.mono.aif",
+      "onsetSec": 35.681042,
+      "estimatedMidi": 63.98086,
+      "rms": 0.09131068
+    },
+    "63": {
+      "source": "Guitar.ff.sulG.C4B4.mono.aif",
+      "onsetSec": 28.170813,
+      "estimatedMidi": 63.025512,
+      "rms": 0.08686854
+    },
+    "62": {
+      "source": "Guitar.ff.sulG.C4B4.mono.aif",
+      "onsetSec": 19.128448,
+      "estimatedMidi": 61.99253,
+      "rms": 0.09730962
+    },
+    "61": {
+      "source": "Guitar.ff.sulG.C4B4.mono.aif",
+      "onsetSec": 8.560281,
+      "estimatedMidi": 60.94294,
+      "rms": 0.09420727
+    },
+    "60": {
+      "source": "Guitar.ff.sulD.C4Ab4.mono.aif",
+      "onsetSec": 0.0,
+      "estimatedMidi": 60.07289,
+      "rms": 0.17319999
+    },
+    "59": {
+      "source": "Guitar.ff.sulD.D3B3.mono.aif",
+      "onsetSec": 100.704865,
+      "estimatedMidi": 58.985963,
+      "rms": 0.17303479
+    },
+    "58": {
+      "source": "Guitar.ff.sulD.D3B3.mono.aif",
+      "onsetSec": 92.518997,
+      "estimatedMidi": 57.919451,
+      "rms": 0.20454808
+    },
+    "57": {
+      "source": "Guitar.ff.sulG.G3B3.mono.aif",
+      "onsetSec": 17.251011,
+      "estimatedMidi": 56.893713,
+      "rms": 0.23767723
+    },
+    "56": {
+      "source": "Guitar.ff.sulE.C3B3.mono.aif",
+      "onsetSec": 72.469948,
+      "estimatedMidi": 55.871711,
+      "rms": 0.21224807
+    },
+    "55": {
+      "source": "Guitar.ff.sulA.C3B3.mono.aif",
+      "onsetSec": 85.69355,
+      "estimatedMidi": 54.824785,
+      "rms": 0.17153026
+    },
+    "54": {
+      "source": "Guitar.ff.sulA.C3B3.mono.aif",
+      "onsetSec": 74.59182,
+      "estimatedMidi": 53.756663,
+      "rms": 0.09091354
+    },
+    "53": {
+      "source": "Guitar.ff.sulA.C3B3.mono.aif",
+      "onsetSec": 65.374382,
+      "estimatedMidi": 52.877234,
+      "rms": 0.05698153
+    },
+    "52": {
+      "source": "Guitar.ff.sulE.C3B3.mono.aif",
+      "onsetSec": 44.472584,
+      "estimatedMidi": 51.934673,
+      "rms": 0.0663005
+    },
+    "51": {
+      "source": "Guitar.ff.sulE.C3B3.mono.aif",
+      "onsetSec": 34.358437,
+      "estimatedMidi": 50.818283,
+      "rms": 0.05814739
+    },
+    "50": {
+      "source": "Guitar.ff.sulE.C3B3.mono.aif",
+      "onsetSec": 18.528635,
+      "estimatedMidi": 49.825556,
+      "rms": 0.07663262
+    },
+    "49": {
+      "source": "Guitar.ff.sulE.C3B3.mono.aif",
+      "onsetSec": 8.704947,
+      "estimatedMidi": 48.659235,
+      "rms": 0.15184726
+    },
+    "48": {
+      "source": "Guitar.ff.sulE.C3B3.mono.aif",
+      "onsetSec": 0.03999,
+      "estimatedMidi": 47.863229,
+      "rms": 0.0874673
+    },
+    "47": {
+      "source": "Guitar.ff.sulA.A2B2.mono.aif",
+      "onsetSec": 26.976042,
+      "estimatedMidi": 46.905109,
+      "rms": 0.0631228
+    },
+    "46": {
+      "source": "Guitar.ff.sulA.A2B2.mono.aif",
+      "onsetSec": 16.229897,
+      "estimatedMidi": 45.947239,
+      "rms": 0.12801528
+    },
+    "45": {
+      "source": "Guitar.ff.sulA.A2B2.mono.aif",
+      "onsetSec": 0.060708,
+      "estimatedMidi": 44.762,
+      "rms": 0.10190506
+    },
+    "44": {
+      "source": "Guitar.ff.sulE.E2B2.mono.aif",
+      "onsetSec": 58.774021,
+      "estimatedMidi": 43.790447,
+      "rms": 0.11987888
+    },
+    "43": {
+      "source": "Guitar.ff.sulE.E2B2.mono.aif",
+      "onsetSec": 45.573605,
+      "estimatedMidi": 42.740685,
+      "rms": 0.11544564
+    },
+    "42": {
+      "source": "Guitar.ff.sulE.E2B2.mono.aif",
+      "onsetSec": 33.292458,
+      "estimatedMidi": 41.809028,
+      "rms": 0.12075998
+    },
+    "41": {
+      "source": "Guitar.ff.sulE.E2B2.mono.aif",
+      "onsetSec": 19.126709,
+      "estimatedMidi": 40.844217,
+      "rms": 0.11372958
+    },
+    "40": {
+      "source": "Guitar.ff.sulE.E2B2.mono.aif",
+      "onsetSec": 0.165906,
+      "estimatedMidi": 39.746725,
+      "rms": 0.0761056
+    }
+  },
+  "samples": [
+    {
+      "id": "m038",
+      "midi": 38,
+      "note": "D2",
+      "hz": 73.416192,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9994886696,
+      "onsetSecBefore": 0.00059,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m038.m4a"
+    },
+    {
+      "id": "m039",
+      "midi": 39,
+      "note": "Eb2",
+      "hz": 77.781746,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9993649866,
+      "onsetSecBefore": 0.000567,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m039.m4a"
+    },
+    {
+      "id": "m040",
+      "midi": 40,
+      "note": "E2",
+      "hz": 82.406889,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0043929658,
+      "onsetSecBefore": 0.000544,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m040.m4a"
+    },
+    {
+      "id": "m041",
+      "midi": 41,
+      "note": "F2",
+      "hz": 87.307058,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9996917636,
+      "onsetSecBefore": 0.002971,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m041.m4a"
+    },
+    {
+      "id": "m042",
+      "midi": 42,
+      "note": "Gb2",
+      "hz": 92.498606,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0000215072,
+      "onsetSecBefore": 0.003946,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m042.m4a"
+    },
+    {
+      "id": "m043",
+      "midi": 43,
+      "note": "G2",
+      "hz": 97.998859,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0013477536,
+      "onsetSecBefore": 0.003968,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m043.m4a"
+    },
+    {
+      "id": "m044",
+      "midi": 44,
+      "note": "Ab2",
+      "hz": 103.826174,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9989835693,
+      "onsetSecBefore": 0.003968,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m044.m4a"
+    },
+    {
+      "id": "m045",
+      "midi": 45,
+      "note": "A2",
+      "hz": 110.0,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9996963554,
+      "onsetSecBefore": 0.003991,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m045.m4a"
+    },
+    {
+      "id": "m046",
+      "midi": 46,
+      "note": "Bb2",
+      "hz": 116.54094,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9988835892,
+      "onsetSecBefore": 0.003968,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m046.m4a"
+    },
+    {
+      "id": "m047",
+      "midi": 47,
+      "note": "B2",
+      "hz": 123.470825,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9996400037,
+      "onsetSecBefore": 0.003946,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m047.m4a"
+    },
+    {
+      "id": "m048",
+      "midi": 48,
+      "note": "C3",
+      "hz": 130.812783,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0050667128,
+      "onsetSecBefore": 0.004014,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m048.m4a"
+    },
+    {
+      "id": "m049",
+      "midi": 49,
+      "note": "Db3",
+      "hz": 138.591315,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9907684326,
+      "onsetSecBefore": 0.000726,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m049.m4a"
+    },
+    {
+      "id": "m050",
+      "midi": 50,
+      "note": "D3",
+      "hz": 146.832384,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0056494583,
+      "onsetSecBefore": 0.003855,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m050.m4a"
+    },
+    {
+      "id": "m051",
+      "midi": 51,
+      "note": "Eb3",
+      "hz": 155.563492,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0035296605,
+      "onsetSecBefore": 0.003923,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m051.m4a"
+    },
+    {
+      "id": "m052",
+      "midi": 52,
+      "note": "E3",
+      "hz": 164.813778,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9987602099,
+      "onsetSecBefore": 0.003991,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m052.m4a"
+    },
+    {
+      "id": "m053",
+      "midi": 53,
+      "note": "F3",
+      "hz": 174.614116,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0044256963,
+      "onsetSecBefore": 0.000658,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m053.m4a"
+    },
+    {
+      "id": "m054",
+      "midi": 54,
+      "note": "Gb3",
+      "hz": 184.997211,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9980732117,
+      "onsetSecBefore": 0.00415,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m054.m4a"
+    },
+    {
+      "id": "m055",
+      "midi": 55,
+      "note": "G3",
+      "hz": 195.997718,
+      "durationMs": 1500.0,
+      "gainApplied": 1.000390722,
+      "onsetSecBefore": 0.004104,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m055.m4a"
+    },
+    {
+      "id": "m056",
+      "midi": 56,
+      "note": "Ab3",
+      "hz": 207.652349,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0002581911,
+      "onsetSecBefore": 0.003923,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m056.m4a"
+    },
+    {
+      "id": "m057",
+      "midi": 57,
+      "note": "A3",
+      "hz": 220.0,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9980046713,
+      "onsetSecBefore": 0.002086,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m057.m4a"
+    },
+    {
+      "id": "m058",
+      "midi": 58,
+      "note": "Bb3",
+      "hz": 233.081881,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9999722397,
+      "onsetSecBefore": 0.002154,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m058.m4a"
+    },
+    {
+      "id": "m059",
+      "midi": 59,
+      "note": "B3",
+      "hz": 246.941651,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9995732224,
+      "onsetSecBefore": 0.002313,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m059.m4a"
+    },
+    {
+      "id": "m060",
+      "midi": 60,
+      "note": "C4",
+      "hz": 261.625565,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9995724542,
+      "onsetSecBefore": 0.002086,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m060.m4a"
+    },
+    {
+      "id": "m061",
+      "midi": 61,
+      "note": "Db4",
+      "hz": 277.182631,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9974742272,
+      "onsetSecBefore": 0.002268,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m061.m4a"
+    },
+    {
+      "id": "m062",
+      "midi": 62,
+      "note": "D4",
+      "hz": 293.664768,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0044513834,
+      "onsetSecBefore": 0.002585,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m062.m4a"
+    },
+    {
+      "id": "m063",
+      "midi": 63,
+      "note": "Eb4",
+      "hz": 311.126984,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9980169014,
+      "onsetSecBefore": 0.00127,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m063.m4a"
+    },
+    {
+      "id": "m064",
+      "midi": 64,
+      "note": "E4",
+      "hz": 329.627557,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0054369315,
+      "onsetSecBefore": 0.002585,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m064.m4a"
+    },
+    {
+      "id": "m065",
+      "midi": 65,
+      "note": "F4",
+      "hz": 349.228231,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0046855991,
+      "onsetSecBefore": 0.003061,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m065.m4a"
+    },
+    {
+      "id": "m066",
+      "midi": 66,
+      "note": "Gb4",
+      "hz": 369.994423,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9894214365,
+      "onsetSecBefore": 0.003946,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m066.m4a"
+    },
+    {
+      "id": "m067",
+      "midi": 67,
+      "note": "G4",
+      "hz": 391.995436,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0089467815,
+      "onsetSecBefore": 0.002698,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m067.m4a"
+    },
+    {
+      "id": "m068",
+      "midi": 68,
+      "note": "Ab4",
+      "hz": 415.304698,
+      "durationMs": 1500.0,
+      "gainApplied": 0.997544561,
+      "onsetSecBefore": 0.002358,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m068.m4a"
+    },
+    {
+      "id": "m069",
+      "midi": 69,
+      "note": "A4",
+      "hz": 440.0,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0021228595,
+      "onsetSecBefore": 0.002653,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m069.m4a"
+    },
+    {
+      "id": "m070",
+      "midi": 70,
+      "note": "Bb4",
+      "hz": 466.163762,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9971185685,
+      "onsetSecBefore": 0.000317,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m070.m4a"
+    },
+    {
+      "id": "m071",
+      "midi": 71,
+      "note": "B4",
+      "hz": 493.883301,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0013793492,
+      "onsetSecBefore": 0.000839,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m071.m4a"
+    },
+    {
+      "id": "m072",
+      "midi": 72,
+      "note": "C5",
+      "hz": 523.251131,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9993705435,
+      "onsetSecBefore": 0.002971,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m072.m4a"
+    },
+    {
+      "id": "m073",
+      "midi": 73,
+      "note": "Db5",
+      "hz": 554.365262,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0051700606,
+      "onsetSecBefore": 0.001361,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m073.m4a"
+    },
+    {
+      "id": "m074",
+      "midi": 74,
+      "note": "D5",
+      "hz": 587.329536,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0049235369,
+      "onsetSecBefore": 0.0,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m074.m4a"
+    },
+    {
+      "id": "m075",
+      "midi": 75,
+      "note": "Eb5",
+      "hz": 622.253967,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0090538161,
+      "onsetSecBefore": 0.001224,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m075.m4a"
+    },
+    {
+      "id": "m076",
+      "midi": 76,
+      "note": "E5",
+      "hz": 659.255114,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9963114843,
+      "onsetSecBefore": 0.002971,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m076.m4a"
+    },
+    {
+      "id": "m077",
+      "midi": 77,
+      "note": "F5",
+      "hz": 698.456463,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0049224576,
+      "onsetSecBefore": 0.003741,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m077.m4a"
+    },
+    {
+      "id": "m078",
+      "midi": 78,
+      "note": "Gb5",
+      "hz": 739.988845,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9998053455,
+      "onsetSecBefore": 0.003787,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m078.m4a"
+    },
+    {
+      "id": "m079",
+      "midi": 79,
+      "note": "G5",
+      "hz": 783.990872,
+      "durationMs": 1500.0,
+      "gainApplied": 0.9998830435,
+      "onsetSecBefore": 0.002766,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m079.m4a"
+    },
+    {
+      "id": "m080",
+      "midi": 80,
+      "note": "Ab5",
+      "hz": 830.609395,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0119451301,
+      "onsetSecBefore": 0.003741,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m080.m4a"
+    },
+    {
+      "id": "m081",
+      "midi": 81,
+      "note": "A5",
+      "hz": 880.0,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0027479414,
+      "onsetSecBefore": 0.00322,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m081.m4a"
+    },
+    {
+      "id": "m082",
+      "midi": 82,
+      "note": "Bb5",
+      "hz": 932.327523,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0008221855,
+      "onsetSecBefore": 0.003923,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m082.m4a"
+    },
+    {
+      "id": "m083",
+      "midi": 83,
+      "note": "B5",
+      "hz": 987.766603,
+      "durationMs": 1500.0,
+      "gainApplied": 1.0000804274,
+      "onsetSecBefore": 0.003764,
+      "onsetSecAfter": 0.004,
+      "file": "/assets/audio/guitar/m083.m4a"
+    }
+  ],
+  "sizeMb": 1.1406,
+  "mappingWorstAbsCents": 0.169184,
+  "mappingWorst": {
+    "gender": "male",
+    "key": "C",
+    "degree": 1,
+    "targetHz": 130.8,
+    "sampleId": "m048",
+    "midi": 48,
+    "sampleHz": 130.812783,
+    "cents": 0.1691841248201487
+  },
+  "report": {
+    "md": "reports/guitar_alignment_report_1770852735.md",
+    "json": "reports/guitar_alignment_report_1770852735.json",
+    "csv": "reports/guitar_alignment_samples_1770852735.csv"
+  }
+}

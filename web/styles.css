@@ -1,0 +1,247 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+:root {
+  color-scheme: dark;
+  --bg: #0b0c10;
+  --panel: #141720;
+  --panel-2: #191e2b;
+  --text: #f5f7ff;
+  --muted: #a1a7c2;
+  --accent: #7fffd4;
+  --accent-2: #5e9fff;
+  --danger: #ff8aa0;
+  --shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  --radius: 18px;
+  font-family: "Space Grotesk", "Manrope", "Helvetica Neue", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 800px at 10% 10%, #1c2638, var(--bg));
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: stretch;
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  font-size: 12px;
+  margin: 0 0 10px;
+}
+
+h1 {
+  font-size: 42px;
+  margin: 0 0 12px;
+}
+
+.subtitle {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--danger);
+  box-shadow: 0 0 12px rgba(255, 138, 160, 0.6);
+}
+
+.cta-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-size: 15px;
+  cursor: pointer;
+  color: var(--text);
+  background: #22293a;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #081016;
+  font-weight: 600;
+  box-shadow: 0 20px 40px rgba(127, 255, 212, 0.25);
+}
+
+.ghost {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.panel {
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.control-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+label {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+select {
+  background: var(--panel-2);
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.octave-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#octaveLabel {
+  min-width: 28px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+}
+
+.keyboard {
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  margin-bottom: 30px;
+}
+
+.keyboard-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.keyboard-title p {
+  color: var(--muted);
+}
+
+.keypad-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.key {
+  background: #1f2535;
+  border-radius: 16px;
+  padding: 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.3);
+  touch-action: none;
+}
+
+.key.is-active {
+  background: linear-gradient(135deg, #2f3650, #28324a);
+  box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.sustain {
+  grid-column: span 2;
+  background: linear-gradient(135deg, #3f2a2a, #2a3b44);
+  color: #eaf7ff;
+}
+
+.alt-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.help {
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.help ul {
+  margin: 12px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .keyboard-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "instrument": "guitar",
+  "passed": true,
+  "metrics": {
+    "onsetSpreadP10P90Ms": 0.0,
+    "onsetMaxMs": 4.0,
+    "fullRmsSpreadDb": 0.22919204576908858,
+    "attackRmsSpreadDb": 1.676276685685523,
+    "midRmsSpreadDb": 3.24059695933068,
+    "maxAdjacentGainStepDb": 0.16973887730804227,
+    "maxPeakLinear": 0.4368690653497071,
+    "maxMappingErrorCents": 0.1691841248201487,
+    "sizeMb": 1.1405677795410156
+  },
+  "gates": {
+    "onsetSpreadP10P90Ms": true,
+    "onsetMaxMs": true,
+    "fullRmsSpreadDb": true,
+    "attackRmsSpreadDb": true,
+    "midRmsSpreadDb": true,
+    "maxAdjacentGainStepDb": true,
+    "maxPeakLinear": true,
+    "maxMappingErrorCents": true,
+    "sizeMb": true
+  },
+  "mappingWorst": {
+    "gender": "male",
+    "key": "C",
+    "degree": 1,
+    "targetHz": 130.8,
+    "sampleId": "m048",
+    "midi": 48,
+    "sampleHz": 130.812783,
+    "cents": 0.1691841248201487
+  }
+}
