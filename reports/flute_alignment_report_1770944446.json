@@ -1,0 +1,36 @@
+{
+  "instrument": "flute",
+  "passed": true,
+  "metrics": {
+    "onsetSpreadP10P90Ms": 0.0,
+    "onsetMaxMs": 4.0,
+    "fullRmsSpreadDb": 0.903752484029982,
+    "attackRmsSpreadDb": 2.531782735905976,
+    "midRmsSpreadDb": 1.4785010353613846,
+    "maxAdjacentGainStepDb": 3.500000000000001,
+    "maxPeakLinear": 0.17458841095107674,
+    "maxMappingErrorCents": 0.16917949672750673,
+    "sizeMb": 3.571727752685547
+  },
+  "gates": {
+    "onsetSpreadP10P90Ms": true,
+    "onsetMaxMs": true,
+    "fullRmsSpreadDb": true,
+    "attackRmsSpreadDb": true,
+    "midRmsSpreadDb": true,
+    "maxAdjacentGainStepDb": true,
+    "maxPeakLinear": true,
+    "maxMappingErrorCents": true,
+    "maxTotalMb": true
+  },
+  "mappingWorst": {
+    "gender": "female",
+    "key": "B",
+    "degree": 7,
+    "targetHz": 932.2364186620509,
+    "sampleId": "m082",
+    "midi": 82,
+    "sampleHz": 932.3275230361799,
+    "cents": -0.16917949672750673
+  }
+}

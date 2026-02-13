@@ -1,0 +1,512 @@
+{
+  "version": 1,
+  "instrument": "flute",
+  "buildId": 1770944446,
+  "source": "University of Iowa MIS Flute (non-vib mf)",
+  "sourceUrl": "https://theremin.music.uiowa.edu/sound%20files/MIS/Woodwinds/flute",
+  "sourceFiles": [
+    "Flute.nonvib.mf.B3B4.aiff",
+    "Flute.nonvib.mf.C5B5.aiff",
+    "Flute.nonvib.mf.C6B6.aiff",
+    "Flute.nonvib.mf.C7.aiff"
+  ],
+  "durationMs": 6000,
+  "sampleRate": 44100,
+  "codec": "aac",
+  "bitrate": "192k",
+  "sampleHzRange": [
+    246.941651,
+    2093.004522
+  ],
+  "alignment": {
+    "method": "peak_ratio_threshold_consecutive_streak_trim_with_preroll",
+    "thresholdRatio": 0.08,
+    "thresholdFloor": 0.003,
+    "minStreakSamples": 96,
+    "envelopeSmoothMs": 3,
+    "startPrerollMs": 4,
+    "fadeInMs": 1,
+    "fadeOutMs": 80
+  },
+  "normalization": {
+    "method": "full_window_dominant_rms_with_neighbor_smoothing_and_peak_guard",
+    "targetBlendedRms": 0.0413492211,
+    "targetPeakLinear": 0.9,
+    "globalPeakScale": 1.0,
+    "gainClamp": [
+      0.6,
+      3.0
+    ],
+    "gainSmoothing": {
+      "lambda": 0.08,
+      "passes": 1
+    },
+    "gainRange": [
+      0.6,
+      3.0
+    ]
+  },
+  "quality": {
+    "spreadMethod": {
+      "onsetMs": "p10_p90",
+      "fullRms": "p10_p90",
+      "attackRms": "p10_p90",
+      "midRms": "p10_p90"
+    },
+    "onsetSpreadP10P90Ms": 0.0,
+    "onsetMaxMs": 4.0,
+    "fullRmsSpreadDb": 0.9038,
+    "attackRmsSpreadDb": 2.5318,
+    "midRmsSpreadDb": 1.4785,
+    "maxAdjacentGainStepDb": 3.5,
+    "maxPeakLinear": 0.174588,
+    "thresholds": {
+      "onsetSpreadP10P90Ms": 3.0,
+      "onsetMaxMs": 8.0,
+      "fullRmsSpreadDb": 2.0,
+      "attackRmsSpreadDb": 3.2,
+      "midRmsSpreadDb": 7.0,
+      "maxAdjacentGainStepDb": 3.5,
+      "maxPeakLinear": 0.9,
+      "maxMappingErrorCents": 10.0,
+      "maxTotalMb": 20.0
+    }
+  },
+  "sizeMb": 3.5717,
+  "mappingWorstAbsCents": 0.169179,
+  "mappingWorst": {
+    "gender": "female",
+    "key": "B",
+    "degree": 7,
+    "targetHz": 932.2364186620509,
+    "sampleId": "m082",
+    "midi": 82,
+    "sampleHz": 932.3275230361799,
+    "cents": -0.16917949672750673
+  },
+  "report": {
+    "md": "reports/flute_alignment_report_1770944446.md",
+    "json": "reports/flute_alignment_report_1770944446.json",
+    "csv": "reports/flute_alignment_samples_1770944446.csv"
+  },
+  "samples": [
+    {
+      "id": "m059",
+      "midi": 59,
+      "note": "B3",
+      "hz": 246.94165062806206,
+      "durationMs": 6000,
+      "gainApplied": 3.0,
+      "onsetSecBefore": 0.591859,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m059.m4a"
+    },
+    {
+      "id": "m060",
+      "midi": 60,
+      "note": "C4",
+      "hz": 261.6255653005986,
+      "durationMs": 6000,
+      "gainApplied": 3.0,
+      "onsetSecBefore": 2.935102,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m060.m4a"
+    },
+    {
+      "id": "m061",
+      "midi": 61,
+      "note": "Db4",
+      "hz": 277.1826309768721,
+      "durationMs": 6000,
+      "gainApplied": 2.9885797365,
+      "onsetSecBefore": 5.551973,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m061.m4a"
+    },
+    {
+      "id": "m062",
+      "midi": 62,
+      "note": "D4",
+      "hz": 293.6647679174076,
+      "durationMs": 6000,
+      "gainApplied": 2.7079403411,
+      "onsetSecBefore": 8.284399,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m062.m4a"
+    },
+    {
+      "id": "m063",
+      "midi": 63,
+      "note": "Eb4",
+      "hz": 311.1269837220809,
+      "durationMs": 6000,
+      "gainApplied": 2.0968858889,
+      "onsetSecBefore": 11.003107,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m063.m4a"
+    },
+    {
+      "id": "m064",
+      "midi": 64,
+      "note": "E4",
+      "hz": 329.6275569128699,
+      "durationMs": 6000,
+      "gainApplied": 1.9974768037,
+      "onsetSecBefore": 13.696621,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m064.m4a"
+    },
+    {
+      "id": "m065",
+      "midi": 65,
+      "note": "F4",
+      "hz": 349.2282314330039,
+      "durationMs": 6000,
+      "gainApplied": 1.8578093981,
+      "onsetSecBefore": 16.509637,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m065.m4a"
+    },
+    {
+      "id": "m066",
+      "midi": 66,
+      "note": "Gb4",
+      "hz": 369.9944227116344,
+      "durationMs": 6000,
+      "gainApplied": 1.7518249634,
+      "onsetSecBefore": 19.419955,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m066.m4a"
+    },
+    {
+      "id": "m067",
+      "midi": 67,
+      "note": "G4",
+      "hz": 391.99543598174927,
+      "durationMs": 6000,
+      "gainApplied": 1.4760772378,
+      "onsetSecBefore": 22.440907,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m067.m4a"
+    },
+    {
+      "id": "m068",
+      "midi": 68,
+      "note": "Ab4",
+      "hz": 415.3046975799451,
+      "durationMs": 6000,
+      "gainApplied": 1.7242052592,
+      "onsetSecBefore": 25.457279,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m068.m4a"
+    },
+    {
+      "id": "m069",
+      "midi": 69,
+      "note": "A4",
+      "hz": 440.0,
+      "durationMs": 6000,
+      "gainApplied": 1.1523620976,
+      "onsetSecBefore": 28.330023,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m069.m4a"
+    },
+    {
+      "id": "m070",
+      "midi": 70,
+      "note": "Bb4",
+      "hz": 466.1637615180899,
+      "durationMs": 6000,
+      "gainApplied": 1.0674140487,
+      "onsetSecBefore": 31.197642,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m070.m4a"
+    },
+    {
+      "id": "m071",
+      "midi": 71,
+      "note": "B4",
+      "hz": 493.8833012561241,
+      "durationMs": 6000,
+      "gainApplied": 1.0201878837,
+      "onsetSecBefore": 34.302018,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m071.m4a"
+    },
+    {
+      "id": "m072",
+      "midi": 72,
+      "note": "C5",
+      "hz": 523.2511306011972,
+      "durationMs": 6000,
+      "gainApplied": 0.9889825839,
+      "onsetSecBefore": 0.327392,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m072.m4a"
+    },
+    {
+      "id": "m073",
+      "midi": 73,
+      "note": "Db5",
+      "hz": 554.3652619537442,
+      "durationMs": 6000,
+      "gainApplied": 1.1513407088,
+      "onsetSecBefore": 3.153923,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m073.m4a"
+    },
+    {
+      "id": "m074",
+      "midi": 74,
+      "note": "D5",
+      "hz": 587.3295358348151,
+      "durationMs": 6000,
+      "gainApplied": 1.141344628,
+      "onsetSecBefore": 5.799773,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m074.m4a"
+    },
+    {
+      "id": "m075",
+      "midi": 75,
+      "note": "Eb5",
+      "hz": 622.2539674441618,
+      "durationMs": 6000,
+      "gainApplied": 1.1172473667,
+      "onsetSecBefore": 8.650998,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m075.m4a"
+    },
+    {
+      "id": "m076",
+      "midi": 76,
+      "note": "E5",
+      "hz": 659.2551138257398,
+      "durationMs": 6000,
+      "gainApplied": 0.8565415891,
+      "onsetSecBefore": 11.385215,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m076.m4a"
+    },
+    {
+      "id": "m077",
+      "midi": 77,
+      "note": "F5",
+      "hz": 698.4564628660078,
+      "durationMs": 6000,
+      "gainApplied": 0.7269813965,
+      "onsetSecBefore": 14.061066,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m077.m4a"
+    },
+    {
+      "id": "m078",
+      "midi": 78,
+      "note": "Gb5",
+      "hz": 739.9888454232688,
+      "durationMs": 6000,
+      "gainApplied": 0.7527018332,
+      "onsetSecBefore": 16.651497,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m078.m4a"
+    },
+    {
+      "id": "m079",
+      "midi": 79,
+      "note": "G5",
+      "hz": 783.9908719634985,
+      "durationMs": 6000,
+      "gainApplied": 1.0649551554,
+      "onsetSecBefore": 19.134535,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m079.m4a"
+    },
+    {
+      "id": "m080",
+      "midi": 80,
+      "note": "Ab5",
+      "hz": 830.6093951598903,
+      "durationMs": 6000,
+      "gainApplied": 1.139203428,
+      "onsetSecBefore": 21.722154,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m080.m4a"
+    },
+    {
+      "id": "m081",
+      "midi": 81,
+      "note": "A5",
+      "hz": 880.0,
+      "durationMs": 6000,
+      "gainApplied": 0.8199753471,
+      "onsetSecBefore": 24.550499,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m081.m4a"
+    },
+    {
+      "id": "m082",
+      "midi": 82,
+      "note": "Bb5",
+      "hz": 932.3275230361799,
+      "durationMs": 6000,
+      "gainApplied": 0.6132257106,
+      "onsetSecBefore": 27.407438,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m082.m4a"
+    },
+    {
+      "id": "m083",
+      "midi": 83,
+      "note": "B5",
+      "hz": 987.7666025122483,
+      "durationMs": 6000,
+      "gainApplied": 0.7479454276,
+      "onsetSecBefore": 30.36,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m083.m4a"
+    },
+    {
+      "id": "m084",
+      "midi": 84,
+      "note": "C6",
+      "hz": 1046.5022612023945,
+      "durationMs": 6000,
+      "gainApplied": 0.6786701888,
+      "onsetSecBefore": 0.36229,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m084.m4a"
+    },
+    {
+      "id": "m085",
+      "midi": 85,
+      "note": "Db6",
+      "hz": 1108.7305239074883,
+      "durationMs": 6000,
+      "gainApplied": 0.6052880279,
+      "onsetSecBefore": 2.888027,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m085.m4a"
+    },
+    {
+      "id": "m086",
+      "midi": 86,
+      "note": "D6",
+      "hz": 1174.6590716696303,
+      "durationMs": 6000,
+      "gainApplied": 0.658980056,
+      "onsetSecBefore": 5.592721,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m086.m4a"
+    },
+    {
+      "id": "m087",
+      "midi": 87,
+      "note": "Eb6",
+      "hz": 1244.5079348883237,
+      "durationMs": 6000,
+      "gainApplied": 0.6879690917,
+      "onsetSecBefore": 8.476281,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m087.m4a"
+    },
+    {
+      "id": "m088",
+      "midi": 88,
+      "note": "E6",
+      "hz": 1318.5102276514797,
+      "durationMs": 6000,
+      "gainApplied": 0.6034793269,
+      "onsetSecBefore": 11.291451,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m088.m4a"
+    },
+    {
+      "id": "m089",
+      "midi": 89,
+      "note": "F6",
+      "hz": 1396.9129257320155,
+      "durationMs": 6000,
+      "gainApplied": 0.6042347164,
+      "onsetSecBefore": 14.08644,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m089.m4a"
+    },
+    {
+      "id": "m090",
+      "midi": 90,
+      "note": "Gb6",
+      "hz": 1479.9776908465376,
+      "durationMs": 6000,
+      "gainApplied": 0.7401242881,
+      "onsetSecBefore": 16.95644,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m090.m4a"
+    },
+    {
+      "id": "m091",
+      "midi": 91,
+      "note": "G6",
+      "hz": 1567.981743926997,
+      "durationMs": 6000,
+      "gainApplied": 1.1074003498,
+      "onsetSecBefore": 19.85263,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m091.m4a"
+    },
+    {
+      "id": "m092",
+      "midi": 92,
+      "note": "Ab6",
+      "hz": 1661.2187903197805,
+      "durationMs": 6000,
+      "gainApplied": 0.7401242881,
+      "onsetSecBefore": 22.626893,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m092.m4a"
+    },
+    {
+      "id": "m093",
+      "midi": 93,
+      "note": "A6",
+      "hz": 1760.0,
+      "durationMs": 6000,
+      "gainApplied": 0.6604528256,
+      "onsetSecBefore": 25.362698,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m093.m4a"
+    },
+    {
+      "id": "m094",
+      "midi": 94,
+      "note": "Bb6",
+      "hz": 1864.6550460723597,
+      "durationMs": 6000,
+      "gainApplied": 0.8212392919,
+      "onsetSecBefore": 28.240544,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m094.m4a"
+    },
+    {
+      "id": "m095",
+      "midi": 95,
+      "note": "B6",
+      "hz": 1975.533205024496,
+      "durationMs": 6000,
+      "gainApplied": 0.608149573,
+      "onsetSecBefore": 31.231927,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m095.m4a"
+    },
+    {
+      "id": "m096",
+      "midi": 96,
+      "note": "C7",
+      "hz": 2093.004522404789,
+      "durationMs": 6000,
+      "gainApplied": 0.6,
+      "onsetSecBefore": 0.431315,
+      "onsetSecAfter": 0.004,
+      "file": "assets/audio/flute/m096.m4a"
+    }
+  ]
+}

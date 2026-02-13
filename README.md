@@ -1,6 +1,6 @@
-# KeyBand
+# KeyBand Studio
 
-KeyBand is a ready-to-run numbered keyboard web app with **realistic piano + guitar sound**.
+KeyBand Studio is a ready-to-run numbered keyboard web app with **realistic piano + guitar + flute**.
 It lets anyone play **1–7** on a normal keyboard.
 
 All audio files are already inside this repo. No download, no rebuild.
@@ -43,8 +43,8 @@ http://127.0.0.1:8080
 - Notes: `1–7` (top row) or numpad `1–7`
 - Octave up: hold `Shift`
 - Octave down: hold `Ctrl`
-- Sustain: hold `8` or `9` or `I` or `O`
-- Switch instrument: use the dropdown (Piano / Guitar)
+- Ped: hold `8` or `9` or `0` or `I` or `O` or `Space`
+- Switch instrument: use the dropdown (Piano / Guitar / Flute)
 
 ---
 

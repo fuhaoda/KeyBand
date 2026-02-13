@@ -31,7 +31,12 @@ const GENDER_BASE_DO = {
 const RELEASE_SEC_BY_INSTRUMENT = {
   piano: 0.7,
   guitar: 1.0,
+  flute: 1.0,
 };
+
+const DEFAULT_RELEASE_SEC = 0.7;
+const INSTRUMENT_GAIN_MIN = 0.5;
+const INSTRUMENT_GAIN_MAX = 2.5;
 
 const UI = {
   statusDot: document.getElementById("statusDot"),
@@ -46,6 +51,12 @@ const UI = {
   octDownButton: document.getElementById("octDownButton"),
   keys: Array.from(document.querySelectorAll(".key[data-degree]")),
   sustainButton: document.querySelector(".key.sustain"),
+  mobileKeyboardButton: document.getElementById("mobileKeyboardButton"),
+  mobileOverlay: document.getElementById("mobileOverlay"),
+  mobileKeys: Array.from(document.querySelectorAll(".mobile-key.degree")),
+  mobilePed: document.querySelector(".mobile-key.ped"),
+  mobileOctUp: document.querySelector('.mobile-key.oct[data-mobile-oct="up"]'),
+  mobileOctDown: document.querySelector('.mobile-key.oct[data-mobile-oct="down"]'),
 };
 
 const STATE = {
@@ -56,12 +67,19 @@ const STATE = {
   audioContext: null,
   masterGain: null,
   compressor: null,
+  instrumentGain: 1.0,
+  referencePeak: null,
   keyVoices: new Map(),
   pointerVoices: new Map(),
+  pendingKeys: new Map(),
+  pendingPointers: new Map(),
   sustainKeys: new Set(),
   sustainTouch: false,
   sustainedVoices: new Set(),
   touchOctaveShift: 0,
+  mobileOverlayActive: false,
+  mobileOctHoldUp: false,
+  mobileOctHoldDown: false,
 };
 
 function updateStatus(text, ok) {
@@ -103,10 +121,26 @@ async function loadManifest(instrument) {
     throw new Error("Audio files are missing");
   }
   const data = await response.json();
+  if (instrument === "piano" && data?.quality?.maxPeakLinear) {
+    STATE.referencePeak = data.quality.maxPeakLinear;
+  } else if (!STATE.referencePeak && data?.quality?.maxPeakLinear) {
+    STATE.referencePeak = data.quality.maxPeakLinear;
+  }
+  STATE.instrumentGain = resolveInstrumentGain(data);
   STATE.manifest = data;
   STATE.samples = Array.isArray(data.samples) ? data.samples : [];
   STATE.samplesSorted = [...STATE.samples].sort((a, b) => a.hz - b.hz);
   updateStatus("Ready", true);
+}
+
+function resolveInstrumentGain(manifest) {
+  const peak = manifest?.quality?.maxPeakLinear;
+  const reference = STATE.referencePeak;
+  if (!peak || !reference) {
+    return 1.0;
+  }
+  const gain = reference / peak;
+  return Math.min(INSTRUMENT_GAIN_MAX, Math.max(INSTRUMENT_GAIN_MIN, gain));
 }
 
 function ensureAudioContext() {
@@ -134,6 +168,11 @@ async function unlockAudio() {
   if (context.state !== "running") {
     await context.resume();
   }
+  const buffer = context.createBuffer(1, 1, context.sampleRate);
+  const source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.start(0);
   updateStatus("Audio ready", true);
 }
 
@@ -237,10 +276,13 @@ function isSustainKey(event) {
   return (
     code === "Digit8" ||
     code === "Digit9" ||
+    code === "Digit0" ||
     code === "Numpad8" ||
     code === "Numpad9" ||
+    code === "Numpad0" ||
     code === "KeyI" ||
-    code === "KeyO"
+    code === "KeyO" ||
+    code === "Space"
   );
 }
 
@@ -250,7 +292,7 @@ function setSustainActive(active) {
     return;
   }
   UI.sustainPill.dataset.active = active ? "true" : "false";
-  UI.sustainPill.textContent = active ? "Sustain On" : "Sustain Off";
+  UI.sustainPill.textContent = active ? "Ped On" : "Ped Off";
   UI.sustainPill.style.background = active ? "rgba(127,255,212,0.18)" : "rgba(255,255,255,0.08)";
   if (!active) {
     for (const voice of Array.from(STATE.sustainedVoices)) {
@@ -266,7 +308,7 @@ function updateSustainState() {
   setSustainActive(active);
 }
 
-async function playDegree(degree, octaveShift, keyId) {
+async function playDegree(degree, octaveShift, keyId, pending) {
   const context = ensureAudioContext();
   const toneContext = getToneContext();
   const semitone = DEGREE_SEMITONES[degree];
@@ -281,16 +323,22 @@ async function playDegree(degree, octaveShift, keyId) {
   }
   const instrumentId = getInstrumentId();
   const buffer = await ensureBuffer(mapping.sampleId);
+  if (pending && pending.released) {
+    return null;
+  }
   const source = context.createBufferSource();
   source.buffer = buffer;
   source.playbackRate.value = mapping.playbackRate;
   const gainNode = context.createGain();
-  gainNode.gain.value = 1.0;
+  gainNode.gain.value = STATE.instrumentGain;
   source.connect(gainNode).connect(STATE.masterGain);
   const voice = { source, gainNode, released: false, instrument: instrumentId };
   if (keyId) {
     voice.keyId = keyId;
     STATE.keyVoices.set(keyId, voice);
+  }
+  if (pending) {
+    pending.voice = voice;
   }
   source.start(context.currentTime + 0.001);
   source.onended = () => {
@@ -302,7 +350,7 @@ async function playDegree(degree, octaveShift, keyId) {
   return voice;
 }
 
-function releaseVoice(voice, releaseTime = RELEASE_SEC) {
+function releaseVoice(voice, releaseTime = DEFAULT_RELEASE_SEC) {
   if (!voice || voice.released) {
     return;
   }
@@ -329,8 +377,108 @@ function releaseKeyVoice(keyId) {
   releaseVoice(voice, getReleaseTime(voice.instrument || "piano"));
 }
 
+async function startKeyNote(keyId, degree, octaveShift) {
+  if (STATE.pendingKeys.has(keyId)) {
+    return;
+  }
+  const pending = { released: false, voice: null };
+  STATE.pendingKeys.set(keyId, pending);
+  const voice = await playDegree(degree, octaveShift, keyId, pending);
+  if (pending.released && voice) {
+    releaseVoice(voice, 0.02);
+  }
+  STATE.pendingKeys.delete(keyId);
+}
+
+function releasePendingKey(keyId) {
+  const pending = STATE.pendingKeys.get(keyId);
+  if (!pending) {
+    return false;
+  }
+  if (!pending.voice) {
+    pending.released = true;
+    return true;
+  }
+  return false;
+}
+
+async function startPointerNote(pointerId, degree, octaveShift) {
+  if (STATE.pendingPointers.has(pointerId)) {
+    return;
+  }
+  const pending = { released: false, voice: null };
+  STATE.pendingPointers.set(pointerId, pending);
+  const voice = await playDegree(degree, octaveShift, null, pending);
+  if (pending.released && voice) {
+    releaseVoice(voice, 0.02);
+  }
+  if (voice) {
+    STATE.pointerVoices.set(pointerId, voice);
+  }
+  STATE.pendingPointers.delete(pointerId);
+}
+
+function releasePendingPointer(pointerId) {
+  const pending = STATE.pendingPointers.get(pointerId);
+  if (!pending) {
+    return false;
+  }
+  if (!pending.voice) {
+    pending.released = true;
+    return true;
+  }
+  return false;
+}
+
 function updateTouchOctaveLabel() {
   UI.octaveLabel.textContent = String(STATE.touchOctaveShift);
+}
+
+function openMobileOverlay() {
+  if (!UI.mobileOverlay) {
+    return;
+  }
+  STATE.mobileOverlayActive = true;
+  UI.mobileOverlay.classList.remove("hidden");
+  UI.mobileOverlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("no-scroll");
+}
+
+function closeMobileOverlay() {
+  if (!UI.mobileOverlay) {
+    return;
+  }
+  STATE.mobileOverlayActive = false;
+  STATE.mobileOctHoldUp = false;
+  STATE.mobileOctHoldDown = false;
+  UI.mobileOverlay.classList.add("hidden");
+  UI.mobileOverlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("no-scroll");
+}
+
+function handleMobileOctDown(direction) {
+  if (direction === "up") {
+    STATE.mobileOctHoldUp = true;
+  } else {
+    STATE.mobileOctHoldDown = true;
+  }
+  if (STATE.mobileOctHoldUp && STATE.mobileOctHoldDown) {
+    closeMobileOverlay();
+  }
+}
+
+function handleMobileOctUp(direction) {
+  if (!STATE.mobileOverlayActive) {
+    return;
+  }
+  if (direction === "up") {
+    STATE.touchOctaveShift = Math.min(2, STATE.touchOctaveShift + 1);
+    STATE.mobileOctHoldUp = false;
+  } else {
+    STATE.touchOctaveShift = Math.max(-2, STATE.touchOctaveShift - 1);
+    STATE.mobileOctHoldDown = false;
+  }
+  updateTouchOctaveLabel();
 }
 
 function bindKeyboardEvents() {
@@ -356,7 +504,7 @@ function bindKeyboardEvents() {
     event.preventDefault();
     const octaveShift = resolveOctaveShiftFromEvent(event);
     const keyId = event.code || event.key;
-    await playDegree(degree, octaveShift, keyId);
+    await startKeyNote(keyId, degree, octaveShift);
     const button = UI.keys.find((el) => Number(el.dataset.degree) === degree);
     if (button) {
       button.classList.add("is-active");
@@ -375,6 +523,9 @@ function bindKeyboardEvents() {
       return;
     }
     const keyId = event.code || event.key;
+    if (releasePendingKey(keyId)) {
+      return;
+    }
     releaseKeyVoice(keyId);
     const degree = resolveKeyboardDegree(event);
     if (degree) {
@@ -397,12 +548,13 @@ function bindTouchKeys() {
       button.classList.add("is-active");
       button.setPointerCapture(event.pointerId);
       const octaveShift = STATE.touchOctaveShift;
-      const voice = await playDegree(degree, octaveShift, null);
-      if (voice) {
-        STATE.pointerVoices.set(event.pointerId, voice);
-      }
+      await startPointerNote(event.pointerId, degree, octaveShift);
     });
     const releaseHandler = (event) => {
+      if (releasePendingPointer(event.pointerId)) {
+        button.classList.remove("is-active");
+        return;
+      }
       const voice = STATE.pointerVoices.get(event.pointerId);
       if (voice) {
         const sustainActive = UI.sustainPill.dataset.active === "true";
@@ -461,6 +613,84 @@ function bindControlButtons() {
   UI.octDownButton.addEventListener("click", () => {
     STATE.touchOctaveShift = Math.max(-2, STATE.touchOctaveShift - 1);
     updateTouchOctaveLabel();
+  });
+
+  UI.mobileKeyboardButton?.addEventListener("click", () => {
+    openMobileOverlay();
+  });
+
+  UI.mobileOverlay?.addEventListener("click", (event) => {
+    if (event.target === UI.mobileOverlay) {
+      closeMobileOverlay();
+    }
+  });
+
+  UI.mobileOctUp?.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    handleMobileOctDown("up");
+  });
+  UI.mobileOctUp?.addEventListener("pointerup", (event) => {
+    event.preventDefault();
+    handleMobileOctUp("up");
+  });
+  UI.mobileOctDown?.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    handleMobileOctDown("down");
+  });
+  UI.mobileOctDown?.addEventListener("pointerup", (event) => {
+    event.preventDefault();
+    handleMobileOctUp("down");
+  });
+
+  UI.mobilePed?.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    UI.mobilePed.classList.add("is-active");
+    UI.mobilePed.setPointerCapture(event.pointerId);
+    STATE.sustainTouch = true;
+    updateSustainState();
+  });
+  UI.mobilePed?.addEventListener("pointerup", () => {
+    UI.mobilePed.classList.remove("is-active");
+    STATE.sustainTouch = false;
+    updateSustainState();
+  });
+  UI.mobilePed?.addEventListener("pointercancel", () => {
+    UI.mobilePed.classList.remove("is-active");
+    STATE.sustainTouch = false;
+    updateSustainState();
+  });
+
+  UI.mobileKeys?.forEach((button) => {
+    button.addEventListener("pointerdown", async (event) => {
+      const degree = Number(button.dataset.degree);
+      if (!degree) {
+        return;
+      }
+      await unlockAudio();
+      button.classList.add("is-active");
+      button.setPointerCapture(event.pointerId);
+      const octaveShift = STATE.touchOctaveShift;
+      await startPointerNote(event.pointerId, degree, octaveShift);
+    });
+    const releaseHandler = (event) => {
+      if (releasePendingPointer(event.pointerId)) {
+        button.classList.remove("is-active");
+        return;
+      }
+      const voice = STATE.pointerVoices.get(event.pointerId);
+      if (voice) {
+        const sustainActive = UI.sustainPill.dataset.active === "true";
+        if (sustainActive) {
+          STATE.sustainedVoices.add(voice);
+        } else {
+          releaseVoice(voice, getReleaseTime(voice.instrument || "piano"));
+        }
+        STATE.pointerVoices.delete(event.pointerId);
+      }
+      button.classList.remove("is-active");
+    };
+    button.addEventListener("pointerup", releaseHandler);
+    button.addEventListener("pointercancel", releaseHandler);
   });
 }
 

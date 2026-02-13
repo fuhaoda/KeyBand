@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>KeyBand Piano</title>
+    <title>KeyBand Studio</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -11,10 +11,10 @@
       <header class="hero">
         <div>
           <p class="eyebrow">KeyBand</p>
-          <h1>Numbered Keyboard Piano</h1>
+          <h1>KeyBand Studio</h1>
           <p class="subtitle">
-            Play 1-7 with real piano samples. Shift = Oct+, Ctrl = Oct-.
-            Sustain with 8/9 or I/O.
+            Play 1-7 with real instruments. Shift = Oct+, Ctrl = Oct-.
+            Ped with 8/9/0 or I/O or Space.
           </p>
           <div class="status">
             <span class="status-dot" id="statusDot"></span>
@@ -31,6 +31,7 @@
             <select id="instrumentSelect">
               <option value="piano">Piano</option>
               <option value="guitar">Guitar</option>
+              <option value="flute">Flute</option>
             </select>
           </div>
           <div class="control-row">
@@ -66,9 +67,9 @@
             </div>
           </div>
           <div class="control-row">
-            <label>Pedal</label>
+            <label>Ped.</label>
             <div class="pedal-indicator">
-              <span class="pill" id="sustainPill">Sustain Off</span>
+              <span class="pill" id="sustainPill">Ped Off</span>
             </div>
           </div>
         </div>
@@ -81,7 +82,7 @@
         </div>
         <div class="keypad-grid">
           <button class="key" data-degree="7">7</button>
-          <button class="key sustain" data-sustain="true">Sustain 8/9</button>
+          <button class="key sustain" data-sustain="true">Ped.</button>
           <button class="key" data-degree="4">4</button>
           <button class="key" data-degree="5">5</button>
           <button class="key" data-degree="6">6</button>
@@ -91,8 +92,9 @@
         </div>
         <div class="alt-row">
           <div>Alt keys: M = 1, , = 2, . = 3, J = 4, K = 5, L = 6, U = 7</div>
-          <div>Sustain keys: 8/9 or I/O</div>
+          <div>Ped keys: 8 / 9 / 0 / I / O / Space</div>
         </div>
+        <button id="mobileKeyboardButton" class="ghost mobile-only">Mobile Keyboard</button>
       </section>
 
       <section class="help">
@@ -100,10 +102,35 @@
         <ul>
           <li>Hold Shift while pressing a note to go up one octave.</li>
           <li>Hold Ctrl while pressing a note to go down one octave.</li>
-          <li>Hold Sustain to let notes ring.</li>
+          <li>Hold Ped to let notes ring.</li>
           <li>Click "Start Audio" once before playing.</li>
         </ul>
       </section>
+    </div>
+
+    <div id="mobileOverlay" class="mobile-overlay hidden" aria-hidden="true">
+      <div class="mobile-overlay__content">
+        <div class="mobile-overlay__header">
+          <div class="mobile-overlay__title">Mobile Keyboard</div>
+          <div class="mobile-overlay__hint">Press Oct+ and Oct- to exit Mobile Keyboard</div>
+        </div>
+        <div class="mobile-grid">
+          <button class="mobile-key oct" data-mobile-oct="up">Oct+</button>
+          <button class="mobile-key degree" data-degree="7">7</button>
+          <div class="mobile-spacer"></div>
+          <div class="mobile-spacer"></div>
+
+          <button class="mobile-key oct" data-mobile-oct="down">Oct-</button>
+          <button class="mobile-key degree" data-degree="4">4</button>
+          <button class="mobile-key degree" data-degree="5">5</button>
+          <button class="mobile-key degree" data-degree="6">6</button>
+
+          <button class="mobile-key ped" data-mobile-ped="true">Ped.</button>
+          <button class="mobile-key degree" data-degree="1">1</button>
+          <button class="mobile-key degree" data-degree="2">2</button>
+          <button class="mobile-key degree" data-degree="3">3</button>
+        </div>
+      </div>
     </div>
     <script type="module" src="app.js"></script>
   </body>
