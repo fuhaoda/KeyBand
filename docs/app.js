@@ -741,6 +741,19 @@ function updateTouchOctaveLabel() {
   UI.octaveLabel.textContent = String(STATE.touchOctaveShift);
 }
 
+function getMobileOctaveModifier() {
+  if (STATE.mobileOctHoldUp && STATE.mobileOctHoldDown) {
+    return 0;
+  }
+  if (STATE.mobileOctHoldUp) {
+    return 1;
+  }
+  if (STATE.mobileOctHoldDown) {
+    return -1;
+  }
+  return 0;
+}
+
 function bindKeypadOctaveButtons() {
   const updateKeypadModifier = () => {
     if (STATE.keypadOctHoldUp && STATE.keypadOctHoldDown) {
@@ -825,17 +838,11 @@ function handleMobileOctDown(direction) {
 }
 
 function handleMobileOctUp(direction) {
-  if (!STATE.mobileOverlayActive) {
-    return;
-  }
   if (direction === "up") {
-    STATE.touchOctaveShift = Math.min(2, STATE.touchOctaveShift + 1);
     STATE.mobileOctHoldUp = false;
   } else {
-    STATE.touchOctaveShift = Math.max(-2, STATE.touchOctaveShift - 1);
     STATE.mobileOctHoldDown = false;
   }
-  updateTouchOctaveLabel();
 }
 
 function bindKeyboardEvents() {
@@ -904,7 +911,8 @@ function bindTouchKeys() {
       await unlockAudio();
       button.classList.add("is-active");
       button.setPointerCapture(event.pointerId);
-      const octaveShift = STATE.touchOctaveShift + STATE.touchOctaveModifier;
+      const modifier = STATE.touchOctaveModifier + (STATE.mobileOverlayActive ? getMobileOctaveModifier() : 0);
+      const octaveShift = Math.max(-2, Math.min(2, STATE.touchOctaveShift + modifier));
       await startPointerNote(event.pointerId, degree, octaveShift);
     });
     const releaseHandler = (event) => {
@@ -1084,7 +1092,8 @@ function bindControlButtons() {
       await unlockAudio();
       button.classList.add("is-active");
       button.setPointerCapture(event.pointerId);
-      const octaveShift = STATE.touchOctaveShift;
+      const modifier = STATE.touchOctaveModifier + getMobileOctaveModifier();
+      const octaveShift = Math.max(-2, Math.min(2, STATE.touchOctaveShift + modifier));
       await startPointerNote(event.pointerId, degree, octaveShift);
     });
     const releaseHandler = (event) => {
