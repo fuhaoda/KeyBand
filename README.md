@@ -45,6 +45,7 @@ http://127.0.0.1:8080
 - Octave down: hold `Ctrl`
 - Ped: hold `8` or `9` or `0` or `I` or `O` or `Space`
 - Switch instrument: use the dropdown (Piano / Guitar / Flute)
+- Mobile Keyboard: tap the button, hold Oct+ or Oct- to shift temporarily, press both to exit
 
 ---
 

@@ -37,7 +37,6 @@ const RELEASE_SEC_BY_INSTRUMENT = {
 const DEFAULT_RELEASE_SEC = 0.7;
 const INSTRUMENT_GAIN_MIN = 0.5;
 const INSTRUMENT_GAIN_MAX = 2.5;
-const DEBUG_LOG_LIMIT = 10;
 const AUDIO_UNLOCK_TIMEOUT_MS = 1200;
 const AUDIO_UNLOCK_RECREATE_FAILURE_THRESHOLD = 2;
 
@@ -62,16 +61,6 @@ const UI = {
   mobileOctDown: document.querySelector('.mobile-key.oct[data-mobile-oct="down"]'),
   keypadOctUp: document.querySelector('.key.oct[data-oct="up"]'),
   keypadOctDown: document.querySelector('.key.oct[data-oct="down"]'),
-  debugStatus: document.getElementById("debugStatus"),
-  debugSecure: document.getElementById("debugSecure"),
-  debugContext: document.getElementById("debugContext"),
-  debugSampleRate: document.getElementById("debugSampleRate"),
-  debugInstrumentGain: document.getElementById("debugInstrumentGain"),
-  debugError: document.getElementById("debugError"),
-  debugLog: document.getElementById("debugLog"),
-  testToneButton: document.getElementById("testToneButton"),
-  testSampleButton: document.getElementById("testSampleButton"),
-  resetAudioButton: document.getElementById("resetAudioButton"),
 };
 
 const STATE = {
@@ -98,7 +87,6 @@ const STATE = {
   mobileOverlayActive: false,
   mobileOctHoldUp: false,
   mobileOctHoldDown: false,
-  debugLog: [],
   audioUnlocked: false,
   audioUnlockPendingGesture: false,
   audioUnlockFailures: 0,
@@ -112,47 +100,25 @@ function updateStatus(text, ok) {
 }
 
 function pushDebug(message) {
-  if (!UI.debugLog) {
-    return;
-  }
   const time = new Date().toLocaleTimeString();
-  const entry = `[${time}] ${message}`;
-  STATE.debugLog.unshift(entry);
-  STATE.debugLog = STATE.debugLog.slice(0, DEBUG_LOG_LIMIT);
-  UI.debugLog.innerHTML = "";
-  STATE.debugLog.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    UI.debugLog.appendChild(li);
-  });
+  console.log(`[${time}] ${message}`);
 }
 
 function setDebugStatus(message, ok = true) {
-  if (UI.debugStatus) {
-    UI.debugStatus.textContent = message;
-    UI.debugStatus.style.color = ok ? "#7fffd4" : "#ff8aa0";
+  if (!message) {
+    return;
   }
+  console.log(`[Debug] ${message} (${ok ? "ok" : "fail"})`);
 }
 
 function setDebugError(message) {
-  if (UI.debugError) {
-    UI.debugError.textContent = message || "";
+  if (message) {
+    console.warn(`[Debug] ${message}`);
   }
 }
 
 function updateDebugInfo() {
-  if (UI.debugSecure) {
-    UI.debugSecure.textContent = window.isSecureContext ? "Yes" : "No";
-  }
-  if (UI.debugContext) {
-    UI.debugContext.textContent = STATE.audioContext ? STATE.audioContext.state : "none";
-  }
-  if (UI.debugSampleRate) {
-    UI.debugSampleRate.textContent = STATE.audioContext ? String(STATE.audioContext.sampleRate) : "-";
-  }
-  if (UI.debugInstrumentGain) {
-    UI.debugInstrumentGain.textContent = STATE.instrumentGain ? STATE.instrumentGain.toFixed(2) : "1.00";
-  }
+  return;
 }
 
 function getInstrumentId() {
@@ -977,64 +943,6 @@ function bindControlButtons() {
   UI.octDownButton.addEventListener("click", () => {
     STATE.touchOctaveShift = Math.max(-2, STATE.touchOctaveShift - 1);
     updateTouchOctaveLabel();
-  });
-
-  UI.testToneButton?.addEventListener("click", async () => {
-    await unlockAudio();
-    const context = await ensureAudioContextRunning();
-    const oscillator = context.createOscillator();
-    const gainNode = context.createGain();
-    gainNode.gain.value = 0.2;
-    oscillator.frequency.value = 440;
-    oscillator.connect(gainNode).connect(STATE.masterGain);
-    oscillator.start();
-    oscillator.stop(context.currentTime + 0.25);
-    pushDebug("Test tone played");
-  });
-
-  UI.testSampleButton?.addEventListener("click", async () => {
-    await unlockAudio();
-    if (!STATE.samplesSorted.length) {
-      pushDebug("No samples loaded");
-      return;
-    }
-    const sample = STATE.samplesSorted[0];
-    try {
-      const buffer = await ensureBuffer(sample.id);
-      const context = await ensureAudioContextRunning();
-      const source = context.createBufferSource();
-      source.buffer = buffer;
-      source.connect(STATE.masterGain);
-      source.start();
-      source.stop(context.currentTime + 0.4);
-      pushDebug("Test sample played");
-    } catch (error) {
-      pushDebug("Test sample failed");
-    }
-  });
-
-  UI.resetAudioButton?.addEventListener("click", async () => {
-    stopAllVoices();
-    clearBuffers();
-    if (STATE.audioContext) {
-      try {
-        await STATE.audioContext.close();
-      } catch (error) {
-        pushDebug("AudioContext close failed");
-      }
-    }
-    STATE.audioContext = null;
-    STATE.masterGain = null;
-    STATE.compressor = null;
-    STATE.audioUnlocked = false;
-    STATE.audioUnlockPendingGesture = false;
-    STATE.audioUnlockFailures = 0;
-    STATE.audioUnlockPromise = null;
-    pushDebug("Audio reset");
-    setDebugStatus("Idle", true);
-    setDebugError("");
-    updateDebugInfo();
-    armAudioUnlockListeners();
   });
 
   UI.mobileKeyboardButton?.addEventListener("click", () => {
