@@ -741,6 +741,19 @@ function updateTouchOctaveLabel() {
   UI.octaveLabel.textContent = String(STATE.touchOctaveShift);
 }
 
+function getMobileOctaveModifier() {
+  if (STATE.mobileOctHoldUp && STATE.mobileOctHoldDown) {
+    return 0;
+  }
+  if (STATE.mobileOctHoldUp) {
+    return 1;
+  }
+  if (STATE.mobileOctHoldDown) {
+    return -1;
+  }
+  return 0;
+}
+
 function bindKeypadOctaveButtons() {
   const updateKeypadModifier = () => {
     if (STATE.keypadOctHoldUp && STATE.keypadOctHoldDown) {
@@ -827,12 +840,9 @@ function handleMobileOctDown(direction) {
 function handleMobileOctUp(direction) {
   if (direction === "up") {
     STATE.mobileOctHoldUp = false;
-    STATE.touchOctaveShift = Math.min(2, STATE.touchOctaveShift + 1);
   } else {
     STATE.mobileOctHoldDown = false;
-    STATE.touchOctaveShift = Math.max(-2, STATE.touchOctaveShift - 1);
   }
-  updateTouchOctaveLabel();
 }
 
 function bindKeyboardEvents() {
@@ -1081,7 +1091,7 @@ function bindControlButtons() {
       await unlockAudio();
       button.classList.add("is-active");
       button.setPointerCapture(event.pointerId);
-      const octaveShift = STATE.touchOctaveShift;
+      const octaveShift = Math.max(-2, Math.min(2, STATE.touchOctaveShift + getMobileOctaveModifier()));
       await startPointerNote(event.pointerId, degree, octaveShift);
     });
     const releaseHandler = (event) => {
