@@ -37,6 +37,7 @@ const RELEASE_SEC_BY_INSTRUMENT = {
 const DEFAULT_RELEASE_SEC = 0.7;
 const INSTRUMENT_GAIN_MIN = 0.5;
 const INSTRUMENT_GAIN_MAX = 2.5;
+const DEBUG_LOG_LIMIT = 10;
 
 const UI = {
   statusDot: document.getElementById("statusDot"),
@@ -57,6 +58,18 @@ const UI = {
   mobilePed: document.querySelector(".mobile-key.ped"),
   mobileOctUp: document.querySelector('.mobile-key.oct[data-mobile-oct="up"]'),
   mobileOctDown: document.querySelector('.mobile-key.oct[data-mobile-oct="down"]'),
+  keypadOctUp: document.querySelector('.key.oct[data-oct="up"]'),
+  keypadOctDown: document.querySelector('.key.oct[data-oct="down"]'),
+  debugStatus: document.getElementById("debugStatus"),
+  debugSecure: document.getElementById("debugSecure"),
+  debugContext: document.getElementById("debugContext"),
+  debugSampleRate: document.getElementById("debugSampleRate"),
+  debugInstrumentGain: document.getElementById("debugInstrumentGain"),
+  debugError: document.getElementById("debugError"),
+  debugLog: document.getElementById("debugLog"),
+  testToneButton: document.getElementById("testToneButton"),
+  testSampleButton: document.getElementById("testSampleButton"),
+  resetAudioButton: document.getElementById("resetAudioButton"),
 };
 
 const STATE = {
@@ -80,12 +93,57 @@ const STATE = {
   mobileOverlayActive: false,
   mobileOctHoldUp: false,
   mobileOctHoldDown: false,
+  debugLog: [],
 };
 
 function updateStatus(text, ok) {
   UI.statusText.textContent = text;
   UI.statusDot.style.background = ok ? "#7fffd4" : "#ff8aa0";
   UI.statusDot.style.boxShadow = ok ? "0 0 12px rgba(127,255,212,0.6)" : "0 0 12px rgba(255,138,160,0.6)";
+}
+
+function pushDebug(message) {
+  if (!UI.debugLog) {
+    return;
+  }
+  const time = new Date().toLocaleTimeString();
+  const entry = `[${time}] ${message}`;
+  STATE.debugLog.unshift(entry);
+  STATE.debugLog = STATE.debugLog.slice(0, DEBUG_LOG_LIMIT);
+  UI.debugLog.innerHTML = "";
+  STATE.debugLog.forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    UI.debugLog.appendChild(li);
+  });
+}
+
+function setDebugStatus(message, ok = true) {
+  if (UI.debugStatus) {
+    UI.debugStatus.textContent = message;
+    UI.debugStatus.style.color = ok ? "#7fffd4" : "#ff8aa0";
+  }
+}
+
+function setDebugError(message) {
+  if (UI.debugError) {
+    UI.debugError.textContent = message || "";
+  }
+}
+
+function updateDebugInfo() {
+  if (UI.debugSecure) {
+    UI.debugSecure.textContent = window.isSecureContext ? "Yes" : "No";
+  }
+  if (UI.debugContext) {
+    UI.debugContext.textContent = STATE.audioContext ? STATE.audioContext.state : "none";
+  }
+  if (UI.debugSampleRate) {
+    UI.debugSampleRate.textContent = STATE.audioContext ? String(STATE.audioContext.sampleRate) : "-";
+  }
+  if (UI.debugInstrumentGain) {
+    UI.debugInstrumentGain.textContent = STATE.instrumentGain ? STATE.instrumentGain.toFixed(2) : "1.00";
+  }
 }
 
 function getInstrumentId() {
@@ -116,8 +174,11 @@ function clearBuffers() {
 }
 
 async function loadManifest(instrument) {
+  pushDebug(`Load manifest: ${instrument}`);
   const response = await fetch(`assets/audio/${instrument}/manifest.json`);
   if (!response.ok) {
+    setDebugStatus("Manifest load failed", false);
+    setDebugError("Manifest fetch failed");
     throw new Error("Audio files are missing");
   }
   const data = await response.json();
@@ -127,10 +188,12 @@ async function loadManifest(instrument) {
     STATE.referencePeak = data.quality.maxPeakLinear;
   }
   STATE.instrumentGain = resolveInstrumentGain(data);
+  updateDebugInfo();
   STATE.manifest = data;
   STATE.samples = Array.isArray(data.samples) ? data.samples : [];
   STATE.samplesSorted = [...STATE.samples].sort((a, b) => a.hz - b.hz);
   updateStatus("Ready", true);
+  setDebugStatus("Ready", true);
 }
 
 function resolveInstrumentGain(manifest) {
@@ -144,8 +207,11 @@ function resolveInstrumentGain(manifest) {
 }
 
 function ensureAudioContext() {
-  if (STATE.audioContext) {
+  if (STATE.audioContext && STATE.audioContext.state !== "closed") {
     return STATE.audioContext;
+  }
+  if (STATE.audioContext && STATE.audioContext.state === "closed") {
+    STATE.audioContext = null;
   }
   const context = new (window.AudioContext || window.webkitAudioContext)();
   const masterGain = context.createGain();
@@ -160,20 +226,35 @@ function ensureAudioContext() {
   STATE.audioContext = context;
   STATE.masterGain = masterGain;
   STATE.compressor = compressor;
+  updateDebugInfo();
   return context;
 }
 
 async function unlockAudio() {
   const context = ensureAudioContext();
-  if (context.state !== "running") {
-    await context.resume();
+  pushDebug("Unlock audio");
+  setDebugStatus("Unlocking…", true);
+  try {
+    if (context.state !== "running") {
+      await context.resume();
+    }
+    if (context.state !== "running") {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await context.resume();
+    }
+    const buffer = context.createBuffer(1, 1, context.sampleRate);
+    const source = context.createBufferSource();
+    source.buffer = buffer;
+    source.connect(context.destination);
+    source.start(0);
+    updateStatus("Audio ready", true);
+    setDebugStatus("Audio ready", true);
+  } catch (error) {
+    setDebugStatus("Audio unlock failed", false);
+    setDebugError(error?.message || "Audio unlock failed");
+    pushDebug(`Unlock error: ${error?.message || "unknown"}`);
   }
-  const buffer = context.createBuffer(1, 1, context.sampleRate);
-  const source = context.createBufferSource();
-  source.buffer = buffer;
-  source.connect(context.destination);
-  source.start(0);
-  updateStatus("Audio ready", true);
+  updateDebugInfo();
 }
 
 async function ensureBuffer(sampleId) {
@@ -182,14 +263,26 @@ async function ensureBuffer(sampleId) {
   }
   const sample = STATE.samples.find((item) => item.id === sampleId);
   if (!sample) {
+    setDebugError(`Sample not found: ${sampleId}`);
     throw new Error(`Sample not found: ${sampleId}`);
   }
-  const response = await fetch(sample.file);
-  const data = await response.arrayBuffer();
-  const context = ensureAudioContext();
-  const buffer = await context.decodeAudioData(data.slice(0));
-  STATE.buffers.set(sampleId, buffer);
-  return buffer;
+  try {
+    pushDebug(`Fetch sample: ${sample.id}`);
+    const response = await fetch(sample.file);
+    if (!response.ok) {
+      throw new Error(`Fetch failed: ${response.status}`);
+    }
+    const data = await response.arrayBuffer();
+    const context = ensureAudioContext();
+    const buffer = await context.decodeAudioData(data.slice(0));
+    STATE.buffers.set(sampleId, buffer);
+    return buffer;
+  } catch (error) {
+    setDebugStatus("Decode failed", false);
+    setDebugError(error?.message || "Decode failed");
+    pushDebug(`Decode error: ${error?.message || "unknown"}`);
+    throw error;
+  }
 }
 
 function mapTargetHzToSample(targetHz) {
@@ -434,6 +527,39 @@ function updateTouchOctaveLabel() {
   UI.octaveLabel.textContent = String(STATE.touchOctaveShift);
 }
 
+function bindKeypadOctaveButtons() {
+  const applyOctaveShift = (delta) => {
+    STATE.touchOctaveShift = Math.max(-2, Math.min(2, STATE.touchOctaveShift + delta));
+    updateTouchOctaveLabel();
+  };
+  if (UI.keypadOctUp) {
+    UI.keypadOctUp.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      UI.keypadOctUp.classList.add("is-active");
+      applyOctaveShift(1);
+    });
+    UI.keypadOctUp.addEventListener("pointerup", () => {
+      UI.keypadOctUp.classList.remove("is-active");
+    });
+    UI.keypadOctUp.addEventListener("pointercancel", () => {
+      UI.keypadOctUp.classList.remove("is-active");
+    });
+  }
+  if (UI.keypadOctDown) {
+    UI.keypadOctDown.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      UI.keypadOctDown.classList.add("is-active");
+      applyOctaveShift(-1);
+    });
+    UI.keypadOctDown.addEventListener("pointerup", () => {
+      UI.keypadOctDown.classList.remove("is-active");
+    });
+    UI.keypadOctDown.addEventListener("pointercancel", () => {
+      UI.keypadOctDown.classList.remove("is-active");
+    });
+  }
+}
+
 function openMobileOverlay() {
   if (!UI.mobileOverlay) {
     return;
@@ -615,6 +741,57 @@ function bindControlButtons() {
     updateTouchOctaveLabel();
   });
 
+  UI.testToneButton?.addEventListener("click", async () => {
+    await unlockAudio();
+    const context = ensureAudioContext();
+    const oscillator = context.createOscillator();
+    const gainNode = context.createGain();
+    gainNode.gain.value = 0.2;
+    oscillator.frequency.value = 440;
+    oscillator.connect(gainNode).connect(STATE.masterGain);
+    oscillator.start();
+    oscillator.stop(context.currentTime + 0.25);
+    pushDebug("Test tone played");
+  });
+
+  UI.testSampleButton?.addEventListener("click", async () => {
+    await unlockAudio();
+    if (!STATE.samplesSorted.length) {
+      pushDebug("No samples loaded");
+      return;
+    }
+    const sample = STATE.samplesSorted[0];
+    try {
+      const buffer = await ensureBuffer(sample.id);
+      const context = ensureAudioContext();
+      const source = context.createBufferSource();
+      source.buffer = buffer;
+      source.connect(STATE.masterGain);
+      source.start();
+      source.stop(context.currentTime + 0.4);
+      pushDebug("Test sample played");
+    } catch (error) {
+      pushDebug("Test sample failed");
+    }
+  });
+
+  UI.resetAudioButton?.addEventListener("click", async () => {
+    stopAllVoices();
+    clearBuffers();
+    if (STATE.audioContext) {
+      try {
+        await STATE.audioContext.close();
+      } catch (error) {
+        pushDebug("AudioContext close failed");
+      }
+    }
+    STATE.audioContext = null;
+    STATE.masterGain = null;
+    STATE.compressor = null;
+    pushDebug("Audio reset");
+    updateDebugInfo();
+  });
+
   UI.mobileKeyboardButton?.addEventListener("click", () => {
     openMobileOverlay();
   });
@@ -700,12 +877,23 @@ async function init() {
     await loadManifest(UI.instrumentSelect.value);
   } catch (error) {
     updateStatus(error.message || "Failed to load audio", false);
+    setDebugStatus("Load failed", false);
+    setDebugError(error.message || "Failed to load audio");
   }
   bindKeyboardEvents();
   bindTouchKeys();
   bindControlButtons();
+  bindKeypadOctaveButtons();
   updateTouchOctaveLabel();
   updateSustainState();
+  updateDebugInfo();
+  document.addEventListener(
+    "touchstart",
+    () => {
+      unlockAudio();
+    },
+    { once: true, passive: true }
+  );
 }
 
 init();

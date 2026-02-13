@@ -81,11 +81,17 @@
           <p>Keyboard: 1-7 or Numpad 1-7. Alt: M , . J K L U.</p>
         </div>
         <div class="keypad-grid">
+          <button class="key oct" data-oct="up">Oct+</button>
           <button class="key" data-degree="7">7</button>
-          <button class="key sustain" data-sustain="true">Ped.</button>
+          <div class="key spacer" aria-hidden="true"></div>
+          <div class="key spacer" aria-hidden="true"></div>
+
+          <button class="key oct" data-oct="down">Oct-</button>
           <button class="key" data-degree="4">4</button>
           <button class="key" data-degree="5">5</button>
           <button class="key" data-degree="6">6</button>
+
+          <button class="key sustain" data-sustain="true">Ped.</button>
           <button class="key" data-degree="1">1</button>
           <button class="key" data-degree="2">2</button>
           <button class="key" data-degree="3">3</button>
@@ -105,6 +111,26 @@
           <li>Hold Ped to let notes ring.</li>
           <li>Click "Start Audio" once before playing.</li>
         </ul>
+      </section>
+
+      <section class="debug" id="debugPanel">
+        <div class="debug-title">
+          <h2>Debug</h2>
+          <span class="debug-status" id="debugStatus">Idle</span>
+        </div>
+        <div class="debug-grid">
+          <div>Secure: <span id="debugSecure">-</span></div>
+          <div>Context: <span id="debugContext">-</span></div>
+          <div>Sample Rate: <span id="debugSampleRate">-</span></div>
+          <div>Instrument Gain: <span id="debugInstrumentGain">-</span></div>
+        </div>
+        <div class="debug-actions">
+          <button id="testToneButton" class="ghost">Test Tone</button>
+          <button id="testSampleButton" class="ghost">Test Sample</button>
+          <button id="resetAudioButton" class="ghost">Reset Audio</button>
+        </div>
+        <div class="debug-error" id="debugError"></div>
+        <ul class="debug-log" id="debugLog"></ul>
       </section>
     </div>
 

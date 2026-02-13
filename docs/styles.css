@@ -198,7 +198,7 @@ select {
 .keypad-grid {
   margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -221,9 +221,19 @@ select {
 }
 
 .sustain {
-  grid-column: span 2;
   background: linear-gradient(135deg, #3f2a2a, #2a3b44);
   color: #eaf7ff;
+}
+
+.key.oct {
+  background: #202a3e;
+}
+
+.key.spacer {
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
 }
 
 .alt-row {
@@ -247,6 +257,73 @@ select {
   padding-left: 20px;
   color: var(--muted);
   line-height: 1.6;
+}
+
+.debug {
+  margin-top: 30px;
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.debug-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.debug-title h2 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.debug-status {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.debug-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.debug-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.debug-log {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+  max-height: 140px;
+  overflow: auto;
+  color: var(--text);
+  font-size: 12px;
+}
+
+.debug-log li {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 6px 10px;
+}
+
+.debug-error {
+  color: var(--danger);
+  min-height: 18px;
+  margin-bottom: 10px;
 }
 
 .mobile-only {
