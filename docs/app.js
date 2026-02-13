@@ -38,6 +38,8 @@ const DEFAULT_RELEASE_SEC = 0.7;
 const INSTRUMENT_GAIN_MIN = 0.5;
 const INSTRUMENT_GAIN_MAX = 2.5;
 const DEBUG_LOG_LIMIT = 10;
+const AUDIO_UNLOCK_TIMEOUT_MS = 1200;
+const AUDIO_UNLOCK_RECREATE_FAILURE_THRESHOLD = 2;
 
 const UI = {
   statusDot: document.getElementById("statusDot"),
@@ -90,10 +92,17 @@ const STATE = {
   sustainTouch: false,
   sustainedVoices: new Set(),
   touchOctaveShift: 0,
+  touchOctaveModifier: 0,
+  keypadOctHoldUp: false,
+  keypadOctHoldDown: false,
   mobileOverlayActive: false,
   mobileOctHoldUp: false,
   mobileOctHoldDown: false,
   debugLog: [],
+  audioUnlocked: false,
+  audioUnlockPendingGesture: false,
+  audioUnlockFailures: 0,
+  audioUnlockPromise: null,
 };
 
 function updateStatus(text, ok) {
@@ -206,53 +215,223 @@ function resolveInstrumentGain(manifest) {
   return Math.min(INSTRUMENT_GAIN_MAX, Math.max(INSTRUMENT_GAIN_MIN, gain));
 }
 
-function ensureAudioContext() {
-  if (STATE.audioContext && STATE.audioContext.state !== "closed") {
-    return STATE.audioContext;
+function configureAudioSessionIfSupported() {
+  try {
+    const audioSession = navigator.audioSession;
+    if (!audioSession) {
+      return;
+    }
+    if (audioSession.type !== "playback") {
+      audioSession.type = "playback";
+    }
+    pushDebug(`audioSession.type=${audioSession.type}`);
+  } catch (error) {
+    pushDebug(`audioSession failed: ${error?.message || "unknown"}`);
+  }
+}
+
+async function resumeAudioContextWithTimeout(context, label = "primary") {
+  if (context.state === "running") {
+    return;
+  }
+  const resumeResult = context.resume();
+  if (resumeResult && typeof resumeResult.then === "function") {
+    await Promise.race([
+      resumeResult,
+      new Promise((_, reject) => {
+        window.setTimeout(() => {
+          reject(new Error(`AudioContext resume timed out (${label})`));
+        }, AUDIO_UNLOCK_TIMEOUT_MS);
+      }),
+    ]);
+    return;
+  }
+  await new Promise((resolve) => window.setTimeout(resolve, 40));
+  if (context.state !== "running") {
+    throw new Error(`AudioContext resume did not enter running state (${label})`);
+  }
+}
+
+function createAudioUnlockPendingError() {
+  const error = new Error("Audio unlock pending user gesture");
+  error.name = "AudioUnlockPendingError";
+  return error;
+}
+
+function isAudioUnlockPendingError(error) {
+  return error?.name === "AudioUnlockPendingError";
+}
+
+async function recreateAudioContext() {
+  const previous = STATE.audioContext;
+  STATE.audioContext = null;
+  STATE.audioUnlocked = false;
+  if (previous && previous.state !== "closed") {
+    try {
+      await previous.close();
+      pushDebug("Previous AudioContext closed");
+    } catch (error) {
+      pushDebug(`AudioContext close failed: ${error?.message || "unknown"}`);
+    }
+  }
+  const fresh = getOrCreateAudioContext();
+  pushDebug("Created fresh AudioContext");
+  return fresh;
+}
+
+function getOrCreateAudioContext() {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    throw new Error("WebAudio API is not available in this browser");
   }
   if (STATE.audioContext && STATE.audioContext.state === "closed") {
     STATE.audioContext = null;
   }
-  const context = new (window.AudioContext || window.webkitAudioContext)();
-  const masterGain = context.createGain();
-  masterGain.gain.value = 0.9;
-  const compressor = context.createDynamicsCompressor();
-  compressor.threshold.value = -20;
-  compressor.knee.value = 12;
-  compressor.ratio.value = 2.2;
-  compressor.attack.value = 0.003;
-  compressor.release.value = 0.2;
-  masterGain.connect(compressor).connect(context.destination);
-  STATE.audioContext = context;
-  STATE.masterGain = masterGain;
-  STATE.compressor = compressor;
+  if (!STATE.audioContext) {
+    STATE.audioContext = new AudioContextClass({ latencyHint: "interactive" });
+    const masterGain = STATE.audioContext.createGain();
+    masterGain.gain.value = 0.9;
+    const compressor = STATE.audioContext.createDynamicsCompressor();
+    compressor.threshold.value = -20;
+    compressor.knee.value = 12;
+    compressor.ratio.value = 2.2;
+    compressor.attack.value = 0.003;
+    compressor.release.value = 0.2;
+    masterGain.connect(compressor).connect(STATE.audioContext.destination);
+    STATE.masterGain = masterGain;
+    STATE.compressor = compressor;
+  }
   updateDebugInfo();
+  return STATE.audioContext;
+}
+
+function primeAudioContextTick(context) {
+  const gainNode = context.createGain();
+  gainNode.gain.value = 0.00001;
+  const oscillator = context.createOscillator();
+  oscillator.type = "sine";
+  oscillator.frequency.value = 880;
+  oscillator.connect(gainNode);
+  gainNode.connect(context.destination);
+  const now = context.currentTime;
+  oscillator.start(now);
+  oscillator.stop(now + 0.01);
+}
+
+async function unlockAudioPipeline() {
+  let context = getOrCreateAudioContext();
+  configureAudioSessionIfSupported();
+  if (context.state === "running") {
+    STATE.audioUnlocked = true;
+    STATE.audioUnlockPendingGesture = false;
+    STATE.audioUnlockFailures = 0;
+    pushDebug("AudioContext already running");
+    return true;
+  }
+
+  if (!STATE.audioUnlockPromise) {
+    STATE.audioUnlockPromise = (async () => {
+      try {
+        await resumeAudioContextWithTimeout(context, "primary");
+      } catch (primaryError) {
+        STATE.audioUnlockFailures += 1;
+        STATE.audioUnlockPendingGesture = true;
+        pushDebug(`Primary resume failed: ${primaryError?.message || "unknown error"}`);
+        if (STATE.audioUnlockFailures < AUDIO_UNLOCK_RECREATE_FAILURE_THRESHOLD) {
+          return false;
+        }
+        try {
+          context = await recreateAudioContext();
+          configureAudioSessionIfSupported();
+          await resumeAudioContextWithTimeout(context, "recreated");
+        } catch (recreatedError) {
+          STATE.audioUnlockFailures += 1;
+          STATE.audioUnlockPendingGesture = true;
+          pushDebug(`Recreated resume failed: ${recreatedError?.message || "unknown error"}`);
+          return false;
+        }
+      }
+      configureAudioSessionIfSupported();
+      primeAudioContextTick(context);
+      STATE.audioUnlocked = true;
+      STATE.audioUnlockPendingGesture = false;
+      STATE.audioUnlockFailures = 0;
+      pushDebug(`AudioContext resumed: ${context.state}`);
+      return true;
+    })().finally(() => {
+      STATE.audioUnlockPromise = null;
+    });
+  }
+
+  return STATE.audioUnlockPromise;
+}
+
+async function ensureAudioContextRunning() {
+  let context = getOrCreateAudioContext();
+  if (context.state === "running") {
+    return context;
+  }
+  let unlocked = await unlockAudioPipeline();
+  context = STATE.audioContext || context;
+  if (!unlocked || context.state !== "running") {
+    pushDebug(`Context state after unlock: ${context.state}`);
+    unlocked = await unlockAudioPipeline();
+    context = STATE.audioContext || context;
+  }
+  if (context.state !== "running") {
+    if (!unlocked || STATE.audioUnlockPendingGesture) {
+      throw createAudioUnlockPendingError();
+    }
+    throw new Error("Audio context is not running");
+  }
   return context;
 }
 
+function warmAudioPipelineOnce() {
+  if (STATE.audioUnlocked) {
+    removeAudioUnlockListeners();
+    return;
+  }
+  void unlockAudioPipeline()
+    .then(() => {
+      if (STATE.audioUnlocked) {
+        removeAudioUnlockListeners();
+      }
+    })
+    .catch(() => {});
+}
+
+function armAudioUnlockListeners() {
+  const options = { capture: true };
+  window.addEventListener("pointerup", warmAudioPipelineOnce, options);
+  window.addEventListener("touchend", warmAudioPipelineOnce, options);
+  window.addEventListener("click", warmAudioPipelineOnce, options);
+  window.addEventListener("keydown", warmAudioPipelineOnce, options);
+}
+
+function removeAudioUnlockListeners() {
+  const options = { capture: true };
+  window.removeEventListener("pointerup", warmAudioPipelineOnce, options);
+  window.removeEventListener("touchend", warmAudioPipelineOnce, options);
+  window.removeEventListener("click", warmAudioPipelineOnce, options);
+  window.removeEventListener("keydown", warmAudioPipelineOnce, options);
+}
+
 async function unlockAudio() {
-  const context = ensureAudioContext();
   pushDebug("Unlock audio");
   setDebugStatus("Unlocking…", true);
   try {
-    if (context.state !== "running") {
-      await context.resume();
-    }
-    if (context.state !== "running") {
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      await context.resume();
-    }
-    const buffer = context.createBuffer(1, 1, context.sampleRate);
-    const source = context.createBufferSource();
-    source.buffer = buffer;
-    source.connect(context.destination);
-    source.start(0);
+    await ensureAudioContextRunning();
     updateStatus("Audio ready", true);
     setDebugStatus("Audio ready", true);
   } catch (error) {
-    setDebugStatus("Audio unlock failed", false);
-    setDebugError(error?.message || "Audio unlock failed");
-    pushDebug(`Unlock error: ${error?.message || "unknown"}`);
+    if (isAudioUnlockPendingError(error)) {
+      setDebugStatus("Audio pending gesture", false);
+    } else {
+      setDebugStatus("Audio unlock failed", false);
+      setDebugError(error?.message || "Audio unlock failed");
+      pushDebug(`Unlock error: ${error?.message || "unknown"}`);
+    }
   }
   updateDebugInfo();
 }
@@ -273,8 +452,8 @@ async function ensureBuffer(sampleId) {
       throw new Error(`Fetch failed: ${response.status}`);
     }
     const data = await response.arrayBuffer();
-    const context = ensureAudioContext();
-    const buffer = await context.decodeAudioData(data.slice(0));
+    const context = getOrCreateAudioContext();
+    const buffer = await decodeAudioDataCompat(context, data);
     STATE.buffers.set(sampleId, buffer);
     return buffer;
   } catch (error) {
@@ -283,6 +462,20 @@ async function ensureBuffer(sampleId) {
     pushDebug(`Decode error: ${error?.message || "unknown"}`);
     throw error;
   }
+}
+
+function decodeAudioDataCompat(context, encoded) {
+  const clonedBuffer = encoded.slice(0);
+  return new Promise((resolve, reject) => {
+    const promiseLike = context.decodeAudioData(
+      clonedBuffer,
+      (buffer) => resolve(buffer),
+      (error) => reject(error || new Error("Failed to decode audio sample")),
+    );
+    if (promiseLike && typeof promiseLike.then === "function") {
+      promiseLike.then(resolve).catch(reject);
+    }
+  });
 }
 
 function mapTargetHzToSample(targetHz) {
@@ -402,7 +595,16 @@ function updateSustainState() {
 }
 
 async function playDegree(degree, octaveShift, keyId, pending) {
-  const context = ensureAudioContext();
+  let context;
+  try {
+    context = await ensureAudioContextRunning();
+  } catch (error) {
+    if (isAudioUnlockPendingError(error)) {
+      pushDebug("Audio unlock pending gesture");
+      return null;
+    }
+    throw error;
+  }
   const toneContext = getToneContext();
   const semitone = DEGREE_SEMITONES[degree];
   if (semitone === undefined) {
@@ -448,7 +650,7 @@ function releaseVoice(voice, releaseTime = DEFAULT_RELEASE_SEC) {
     return;
   }
   voice.released = true;
-  const context = ensureAudioContext();
+  const context = STATE.audioContext || getOrCreateAudioContext();
   const now = context.currentTime;
   voice.gainNode.gain.cancelScheduledValues(now);
   voice.gainNode.gain.setValueAtTime(voice.gainNode.gain.value, now);
@@ -476,7 +678,13 @@ async function startKeyNote(keyId, degree, octaveShift) {
   }
   const pending = { released: false, voice: null };
   STATE.pendingKeys.set(keyId, pending);
-  const voice = await playDegree(degree, octaveShift, keyId, pending);
+  let voice = null;
+  try {
+    voice = await playDegree(degree, octaveShift, keyId, pending);
+  } catch (error) {
+    setDebugError(error?.message || "Playback failed");
+    pushDebug(`Play error: ${error?.message || "unknown error"}`);
+  }
   if (pending.released && voice) {
     releaseVoice(voice, 0.02);
   }
@@ -501,7 +709,13 @@ async function startPointerNote(pointerId, degree, octaveShift) {
   }
   const pending = { released: false, voice: null };
   STATE.pendingPointers.set(pointerId, pending);
-  const voice = await playDegree(degree, octaveShift, null, pending);
+  let voice = null;
+  try {
+    voice = await playDegree(degree, octaveShift, null, pending);
+  } catch (error) {
+    setDebugError(error?.message || "Playback failed");
+    pushDebug(`Play error: ${error?.message || "unknown error"}`);
+  }
   if (pending.released && voice) {
     releaseVoice(voice, 0.02);
   }
@@ -528,34 +742,51 @@ function updateTouchOctaveLabel() {
 }
 
 function bindKeypadOctaveButtons() {
-  const applyOctaveShift = (delta) => {
-    STATE.touchOctaveShift = Math.max(-2, Math.min(2, STATE.touchOctaveShift + delta));
-    updateTouchOctaveLabel();
+  const updateKeypadModifier = () => {
+    if (STATE.keypadOctHoldUp && STATE.keypadOctHoldDown) {
+      STATE.touchOctaveModifier = 0;
+    } else if (STATE.keypadOctHoldUp) {
+      STATE.touchOctaveModifier = 1;
+    } else if (STATE.keypadOctHoldDown) {
+      STATE.touchOctaveModifier = -1;
+    } else {
+      STATE.touchOctaveModifier = 0;
+    }
   };
   if (UI.keypadOctUp) {
     UI.keypadOctUp.addEventListener("pointerdown", (event) => {
       event.preventDefault();
       UI.keypadOctUp.classList.add("is-active");
-      applyOctaveShift(1);
+      STATE.keypadOctHoldUp = true;
+      updateKeypadModifier();
     });
     UI.keypadOctUp.addEventListener("pointerup", () => {
       UI.keypadOctUp.classList.remove("is-active");
+      STATE.keypadOctHoldUp = false;
+      updateKeypadModifier();
     });
     UI.keypadOctUp.addEventListener("pointercancel", () => {
       UI.keypadOctUp.classList.remove("is-active");
+      STATE.keypadOctHoldUp = false;
+      updateKeypadModifier();
     });
   }
   if (UI.keypadOctDown) {
     UI.keypadOctDown.addEventListener("pointerdown", (event) => {
       event.preventDefault();
       UI.keypadOctDown.classList.add("is-active");
-      applyOctaveShift(-1);
+      STATE.keypadOctHoldDown = true;
+      updateKeypadModifier();
     });
     UI.keypadOctDown.addEventListener("pointerup", () => {
       UI.keypadOctDown.classList.remove("is-active");
+      STATE.keypadOctHoldDown = false;
+      updateKeypadModifier();
     });
     UI.keypadOctDown.addEventListener("pointercancel", () => {
       UI.keypadOctDown.classList.remove("is-active");
+      STATE.keypadOctHoldDown = false;
+      updateKeypadModifier();
     });
   }
 }
@@ -673,7 +904,7 @@ function bindTouchKeys() {
       await unlockAudio();
       button.classList.add("is-active");
       button.setPointerCapture(event.pointerId);
-      const octaveShift = STATE.touchOctaveShift;
+      const octaveShift = STATE.touchOctaveShift + STATE.touchOctaveModifier;
       await startPointerNote(event.pointerId, degree, octaveShift);
     });
     const releaseHandler = (event) => {
@@ -743,7 +974,7 @@ function bindControlButtons() {
 
   UI.testToneButton?.addEventListener("click", async () => {
     await unlockAudio();
-    const context = ensureAudioContext();
+    const context = await ensureAudioContextRunning();
     const oscillator = context.createOscillator();
     const gainNode = context.createGain();
     gainNode.gain.value = 0.2;
@@ -763,7 +994,7 @@ function bindControlButtons() {
     const sample = STATE.samplesSorted[0];
     try {
       const buffer = await ensureBuffer(sample.id);
-      const context = ensureAudioContext();
+      const context = await ensureAudioContextRunning();
       const source = context.createBufferSource();
       source.buffer = buffer;
       source.connect(STATE.masterGain);
@@ -788,8 +1019,15 @@ function bindControlButtons() {
     STATE.audioContext = null;
     STATE.masterGain = null;
     STATE.compressor = null;
+    STATE.audioUnlocked = false;
+    STATE.audioUnlockPendingGesture = false;
+    STATE.audioUnlockFailures = 0;
+    STATE.audioUnlockPromise = null;
     pushDebug("Audio reset");
+    setDebugStatus("Idle", true);
+    setDebugError("");
     updateDebugInfo();
+    armAudioUnlockListeners();
   });
 
   UI.mobileKeyboardButton?.addEventListener("click", () => {
@@ -887,13 +1125,7 @@ async function init() {
   updateTouchOctaveLabel();
   updateSustainState();
   updateDebugInfo();
-  document.addEventListener(
-    "touchstart",
-    () => {
-      unlockAudio();
-    },
-    { once: true, passive: true }
-  );
+  armAudioUnlockListeners();
 }
 
 init();
