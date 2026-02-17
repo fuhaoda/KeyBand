@@ -39,7 +39,7 @@ const INSTRUMENT_GAIN_MIN = 0.5;
 const INSTRUMENT_GAIN_MAX = 2.5;
 const AUDIO_UNLOCK_TIMEOUT_MS = 1200;
 const AUDIO_UNLOCK_RECREATE_FAILURE_THRESHOLD = 2;
-const MOBILE_BREAKPOINT_PX = 900;
+const MOBILE_OVERLAY_EXIT_HOLD_MS = 500;
 const WARMUP_NOTE_TARGETS = [
   { degree: 1, octaveShift: 0 },
   { degree: 2, octaveShift: 0 },
@@ -104,7 +104,7 @@ const STATE = {
   mobileOverlayActive: false,
   mobileOctHoldUp: false,
   mobileOctHoldDown: false,
-  mobileOrientationLocked: false,
+  mobileExitHoldTimerId: null,
   audioUnlocked: false,
   audioUnlockPendingGesture: false,
   audioUnlockFailures: 0,
@@ -177,6 +177,14 @@ function clearBuffers() {
     STATE.warmupTimerId = null;
   }
   STATE.warmupTaskId += 1;
+}
+
+function clearMobileExitHoldTimer() {
+  if (!STATE.mobileExitHoldTimerId) {
+    return;
+  }
+  window.clearTimeout(STATE.mobileExitHoldTimerId);
+  STATE.mobileExitHoldTimerId = null;
 }
 
 async function loadManifest(instrument) {
@@ -614,55 +622,24 @@ async function warmupSamples(taskId, sampleIds, reason) {
   pushDebug("Warmup ready");
 }
 
-function isMobileViewport() {
-  return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX}px)`).matches;
-}
-
-function updateMobileLandscapeFallback() {
-  const shouldForceLandscape =
-    STATE.mobileOverlayActive &&
-    isMobileViewport() &&
-    window.matchMedia("(orientation: portrait)").matches &&
-    !STATE.mobileOrientationLocked;
-  document.body.classList.toggle("force-mobile-landscape", shouldForceLandscape);
-}
-
-async function lockMobileLandscapeIfSupported() {
-  STATE.mobileOrientationLocked = false;
-  updateMobileLandscapeFallback();
-  const orientation = window.screen?.orientation;
-  if (orientation && typeof orientation.lock === "function") {
-    try {
-      await orientation.lock("landscape");
-      STATE.mobileOrientationLocked = true;
-    } catch (error) {
-      pushDebug(`Orientation lock failed: ${error?.message || "unsupported"}`);
-    }
-  }
+function syncMobileOverlayExitHold() {
   if (!STATE.mobileOverlayActive) {
-    if (STATE.mobileOrientationLocked && orientation && typeof orientation.unlock === "function") {
-      try {
-        orientation.unlock();
-      } catch (error) {
-        pushDebug(`Orientation unlock failed: ${error?.message || "unsupported"}`);
-      }
-    }
-    STATE.mobileOrientationLocked = false;
+    clearMobileExitHoldTimer();
+    return;
   }
-  updateMobileLandscapeFallback();
-}
-
-function unlockMobileLandscapeIfSupported() {
-  const orientation = window.screen?.orientation;
-  if (STATE.mobileOrientationLocked && orientation && typeof orientation.unlock === "function") {
-    try {
-      orientation.unlock();
-    } catch (error) {
-      pushDebug(`Orientation unlock failed: ${error?.message || "unsupported"}`);
-    }
+  if (!STATE.mobileOctHoldUp || !STATE.mobileOctHoldDown) {
+    clearMobileExitHoldTimer();
+    return;
   }
-  STATE.mobileOrientationLocked = false;
-  updateMobileLandscapeFallback();
+  if (STATE.mobileExitHoldTimerId) {
+    return;
+  }
+  STATE.mobileExitHoldTimerId = window.setTimeout(() => {
+    STATE.mobileExitHoldTimerId = null;
+    if (STATE.mobileOverlayActive && STATE.mobileOctHoldUp && STATE.mobileOctHoldDown) {
+      closeMobileOverlay();
+    }
+  }, MOBILE_OVERLAY_EXIT_HOLD_MS);
 }
 
 function resolveOctaveShiftFromEvent(event) {
@@ -955,24 +932,31 @@ function openMobileOverlay() {
   if (!UI.mobileOverlay) {
     return;
   }
+  clearMobileExitHoldTimer();
   STATE.mobileOverlayActive = true;
+  STATE.mobileOctHoldUp = false;
+  STATE.mobileOctHoldDown = false;
+  UI.mobileOctUp?.classList.remove("is-active");
+  UI.mobileOctDown?.classList.remove("is-active");
   UI.mobileOverlay.classList.remove("hidden");
   UI.mobileOverlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("no-scroll");
-  void lockMobileLandscapeIfSupported();
 }
 
 function closeMobileOverlay() {
   if (!UI.mobileOverlay) {
     return;
   }
+  clearMobileExitHoldTimer();
   STATE.mobileOverlayActive = false;
   STATE.mobileOctHoldUp = false;
   STATE.mobileOctHoldDown = false;
+  UI.mobileOctUp?.classList.remove("is-active");
+  UI.mobileOctDown?.classList.remove("is-active");
+  UI.mobilePed?.classList.remove("is-active");
   UI.mobileOverlay.classList.add("hidden");
   UI.mobileOverlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("no-scroll");
-  unlockMobileLandscapeIfSupported();
 }
 
 function handleMobileOctDown(direction) {
@@ -981,9 +965,7 @@ function handleMobileOctDown(direction) {
   } else {
     STATE.mobileOctHoldDown = true;
   }
-  if (STATE.mobileOctHoldUp && STATE.mobileOctHoldDown) {
-    closeMobileOverlay();
-  }
+  syncMobileOverlayExitHold();
 }
 
 function handleMobileOctUp(direction) {
@@ -992,6 +974,7 @@ function handleMobileOctUp(direction) {
   } else {
     STATE.mobileOctHoldDown = false;
   }
+  syncMobileOverlayExitHold();
 }
 
 function bindKeyboardEvents() {
@@ -1148,18 +1131,34 @@ function bindControlButtons() {
 
   UI.mobileOctUp?.addEventListener("pointerdown", (event) => {
     event.preventDefault();
+    UI.mobileOctUp.classList.add("is-active");
+    UI.mobileOctUp.setPointerCapture(event.pointerId);
     handleMobileOctDown("up");
   });
   UI.mobileOctUp?.addEventListener("pointerup", (event) => {
     event.preventDefault();
+    UI.mobileOctUp.classList.remove("is-active");
+    handleMobileOctUp("up");
+  });
+  UI.mobileOctUp?.addEventListener("pointercancel", (event) => {
+    event.preventDefault();
+    UI.mobileOctUp.classList.remove("is-active");
     handleMobileOctUp("up");
   });
   UI.mobileOctDown?.addEventListener("pointerdown", (event) => {
     event.preventDefault();
+    UI.mobileOctDown.classList.add("is-active");
+    UI.mobileOctDown.setPointerCapture(event.pointerId);
     handleMobileOctDown("down");
   });
   UI.mobileOctDown?.addEventListener("pointerup", (event) => {
     event.preventDefault();
+    UI.mobileOctDown.classList.remove("is-active");
+    handleMobileOctUp("down");
+  });
+  UI.mobileOctDown?.addEventListener("pointercancel", (event) => {
+    event.preventDefault();
+    UI.mobileOctDown.classList.remove("is-active");
     handleMobileOctUp("down");
   });
 
@@ -1228,8 +1227,6 @@ async function init() {
   bindTouchKeys();
   bindControlButtons();
   bindKeypadOctaveButtons();
-  window.addEventListener("resize", updateMobileLandscapeFallback);
-  window.addEventListener("orientationchange", updateMobileLandscapeFallback);
   updateTouchOctaveLabel();
   updateSustainState();
   updateDebugInfo();
