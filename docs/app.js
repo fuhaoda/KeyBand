@@ -39,6 +39,21 @@ const INSTRUMENT_GAIN_MIN = 0.5;
 const INSTRUMENT_GAIN_MAX = 2.5;
 const AUDIO_UNLOCK_TIMEOUT_MS = 1200;
 const AUDIO_UNLOCK_RECREATE_FAILURE_THRESHOLD = 2;
+const MOBILE_BREAKPOINT_PX = 900;
+const WARMUP_NOTE_TARGETS = [
+  { degree: 1, octaveShift: 0 },
+  { degree: 2, octaveShift: 0 },
+  { degree: 3, octaveShift: 0 },
+  { degree: 4, octaveShift: 0 },
+  { degree: 5, octaveShift: 0 },
+  { degree: 6, octaveShift: 0 },
+  { degree: 7, octaveShift: 0 },
+  { degree: 1, octaveShift: 1 },
+  { degree: 2, octaveShift: 1 },
+  { degree: 4, octaveShift: -1 },
+  { degree: 5, octaveShift: -1 },
+  { degree: 6, octaveShift: -1 },
+];
 
 const UI = {
   statusDot: document.getElementById("statusDot"),
@@ -68,6 +83,8 @@ const STATE = {
   samples: [],
   samplesSorted: [],
   buffers: new Map(),
+  bufferPromises: new Map(),
+  bufferEpoch: 0,
   audioContext: null,
   masterGain: null,
   compressor: null,
@@ -87,10 +104,15 @@ const STATE = {
   mobileOverlayActive: false,
   mobileOctHoldUp: false,
   mobileOctHoldDown: false,
+  mobileOrientationLocked: false,
   audioUnlocked: false,
   audioUnlockPendingGesture: false,
   audioUnlockFailures: 0,
   audioUnlockPromise: null,
+  warmupTaskId: 0,
+  warmupTimerId: null,
+  lastWarmupSignature: "",
+  warmupPendingSelection: false,
 };
 
 function updateStatus(text, ok) {
@@ -145,7 +167,16 @@ function stopAllVoices() {
 }
 
 function clearBuffers() {
+  STATE.bufferEpoch += 1;
   STATE.buffers.clear();
+  STATE.bufferPromises.clear();
+  STATE.lastWarmupSignature = "";
+  STATE.warmupPendingSelection = false;
+  if (STATE.warmupTimerId) {
+    window.clearTimeout(STATE.warmupTimerId);
+    STATE.warmupTimerId = null;
+  }
+  STATE.warmupTaskId += 1;
 }
 
 async function loadManifest(instrument) {
@@ -167,6 +198,7 @@ async function loadManifest(instrument) {
   STATE.manifest = data;
   STATE.samples = Array.isArray(data.samples) ? data.samples : [];
   STATE.samplesSorted = [...STATE.samples].sort((a, b) => a.hz - b.hz);
+  queueWarmupForCurrentSelection("manifest");
   updateStatus("Ready", true);
   setDebugStatus("Ready", true);
 }
@@ -355,12 +387,14 @@ async function ensureAudioContextRunning() {
 
 function warmAudioPipelineOnce() {
   if (STATE.audioUnlocked) {
+    queueWarmupForCurrentSelection("warm-listener-ready");
     removeAudioUnlockListeners();
     return;
   }
   void unlockAudioPipeline()
     .then(() => {
       if (STATE.audioUnlocked) {
+        queueWarmupForCurrentSelection("warm-listener-unlocked");
         removeAudioUnlockListeners();
       }
     })
@@ -388,6 +422,7 @@ async function unlockAudio() {
   setDebugStatus("Unlocking…", true);
   try {
     await ensureAudioContextRunning();
+    queueWarmupForCurrentSelection("unlock");
     updateStatus("Audio ready", true);
     setDebugStatus("Audio ready", true);
   } catch (error) {
@@ -406,27 +441,47 @@ async function ensureBuffer(sampleId) {
   if (STATE.buffers.has(sampleId)) {
     return STATE.buffers.get(sampleId);
   }
+  const epoch = STATE.bufferEpoch;
+  const inFlight = STATE.bufferPromises.get(sampleId);
+  if (inFlight && inFlight.epoch === epoch) {
+    return inFlight.promise;
+  }
   const sample = STATE.samples.find((item) => item.id === sampleId);
   if (!sample) {
     setDebugError(`Sample not found: ${sampleId}`);
     throw new Error(`Sample not found: ${sampleId}`);
   }
-  try {
-    pushDebug(`Fetch sample: ${sample.id}`);
-    const response = await fetch(sample.file);
-    if (!response.ok) {
-      throw new Error(`Fetch failed: ${response.status}`);
+  const loadPromise = (async () => {
+    try {
+      pushDebug(`Fetch sample: ${sample.id}`);
+      const response = await fetch(sample.file);
+      if (!response.ok) {
+        throw new Error(`Fetch failed: ${response.status}`);
+      }
+      const data = await response.arrayBuffer();
+      const context = getOrCreateAudioContext();
+      const buffer = await decodeAudioDataCompat(context, data);
+      if (epoch !== STATE.bufferEpoch) {
+        pushDebug(`Discard stale sample: ${sample.id}`);
+        return null;
+      }
+      STATE.buffers.set(sampleId, buffer);
+      return buffer;
+    } catch (error) {
+      setDebugStatus("Decode failed", false);
+      setDebugError(error?.message || "Decode failed");
+      pushDebug(`Decode error: ${error?.message || "unknown"}`);
+      throw error;
     }
-    const data = await response.arrayBuffer();
-    const context = getOrCreateAudioContext();
-    const buffer = await decodeAudioDataCompat(context, data);
-    STATE.buffers.set(sampleId, buffer);
-    return buffer;
-  } catch (error) {
-    setDebugStatus("Decode failed", false);
-    setDebugError(error?.message || "Decode failed");
-    pushDebug(`Decode error: ${error?.message || "unknown"}`);
-    throw error;
+  })();
+  STATE.bufferPromises.set(sampleId, { epoch, promise: loadPromise });
+  try {
+    return await loadPromise;
+  } finally {
+    const active = STATE.bufferPromises.get(sampleId);
+    if (active?.promise === loadPromise) {
+      STATE.bufferPromises.delete(sampleId);
+    }
   }
 }
 
@@ -485,6 +540,129 @@ function getToneContext() {
   const keyOffset = KEY_OFFSETS[key] ?? 0;
   const doFrequency = base * 2 ** (keyOffset / 12);
   return { gender, key, doFrequency };
+}
+
+function getWarmupSampleIdsForCurrentSelection() {
+  if (!STATE.samplesSorted.length) {
+    return [];
+  }
+  const toneContext = getToneContext();
+  const seen = new Set();
+  const sampleIds = [];
+  for (const target of WARMUP_NOTE_TARGETS) {
+    const semitone = DEGREE_SEMITONES[target.degree];
+    if (semitone === undefined) {
+      continue;
+    }
+    const targetHz =
+      toneContext.doFrequency * 2 ** (semitone / 12) * 2 ** target.octaveShift;
+    const mapping = mapTargetHzToSample(targetHz);
+    if (!mapping || seen.has(mapping.sampleId)) {
+      continue;
+    }
+    seen.add(mapping.sampleId);
+    sampleIds.push(mapping.sampleId);
+  }
+  return sampleIds;
+}
+
+function queueWarmupForCurrentSelection(reason = "selection") {
+  if (!STATE.samplesSorted.length) {
+    return;
+  }
+  if (!STATE.audioUnlocked) {
+    STATE.warmupPendingSelection = true;
+    return;
+  }
+  const sampleIds = getWarmupSampleIdsForCurrentSelection();
+  if (!sampleIds.length) {
+    return;
+  }
+  const signature = `${getInstrumentId()}|${UI.genderSelect.value}|${UI.keySelect.value}|${sampleIds.join(",")}`;
+  if (!STATE.warmupPendingSelection && signature === STATE.lastWarmupSignature) {
+    return;
+  }
+  STATE.lastWarmupSignature = signature;
+  STATE.warmupPendingSelection = false;
+  const taskId = STATE.warmupTaskId + 1;
+  STATE.warmupTaskId = taskId;
+  if (STATE.warmupTimerId) {
+    window.clearTimeout(STATE.warmupTimerId);
+  }
+  STATE.warmupTimerId = window.setTimeout(() => {
+    STATE.warmupTimerId = null;
+    void warmupSamples(taskId, sampleIds, reason);
+  }, 40);
+}
+
+async function warmupSamples(taskId, sampleIds, reason) {
+  pushDebug(`Warmup start (${reason}): ${sampleIds.length} samples`);
+  for (const sampleId of sampleIds) {
+    if (taskId !== STATE.warmupTaskId) {
+      pushDebug("Warmup canceled");
+      return;
+    }
+    try {
+      await ensureBuffer(sampleId);
+    } catch (error) {
+      pushDebug(`Warmup sample failed (${sampleId}): ${error?.message || "unknown error"}`);
+    }
+  }
+  if (taskId !== STATE.warmupTaskId) {
+    return;
+  }
+  pushDebug("Warmup ready");
+}
+
+function isMobileViewport() {
+  return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX}px)`).matches;
+}
+
+function updateMobileLandscapeFallback() {
+  const shouldForceLandscape =
+    STATE.mobileOverlayActive &&
+    isMobileViewport() &&
+    window.matchMedia("(orientation: portrait)").matches &&
+    !STATE.mobileOrientationLocked;
+  document.body.classList.toggle("force-mobile-landscape", shouldForceLandscape);
+}
+
+async function lockMobileLandscapeIfSupported() {
+  STATE.mobileOrientationLocked = false;
+  updateMobileLandscapeFallback();
+  const orientation = window.screen?.orientation;
+  if (orientation && typeof orientation.lock === "function") {
+    try {
+      await orientation.lock("landscape");
+      STATE.mobileOrientationLocked = true;
+    } catch (error) {
+      pushDebug(`Orientation lock failed: ${error?.message || "unsupported"}`);
+    }
+  }
+  if (!STATE.mobileOverlayActive) {
+    if (STATE.mobileOrientationLocked && orientation && typeof orientation.unlock === "function") {
+      try {
+        orientation.unlock();
+      } catch (error) {
+        pushDebug(`Orientation unlock failed: ${error?.message || "unsupported"}`);
+      }
+    }
+    STATE.mobileOrientationLocked = false;
+  }
+  updateMobileLandscapeFallback();
+}
+
+function unlockMobileLandscapeIfSupported() {
+  const orientation = window.screen?.orientation;
+  if (STATE.mobileOrientationLocked && orientation && typeof orientation.unlock === "function") {
+    try {
+      orientation.unlock();
+    } catch (error) {
+      pushDebug(`Orientation unlock failed: ${error?.message || "unsupported"}`);
+    }
+  }
+  STATE.mobileOrientationLocked = false;
+  updateMobileLandscapeFallback();
 }
 
 function resolveOctaveShiftFromEvent(event) {
@@ -584,6 +762,9 @@ async function playDegree(degree, octaveShift, keyId, pending) {
   }
   const instrumentId = getInstrumentId();
   const buffer = await ensureBuffer(mapping.sampleId);
+  if (!buffer) {
+    return null;
+  }
   if (pending && pending.released) {
     return null;
   }
@@ -778,6 +959,7 @@ function openMobileOverlay() {
   UI.mobileOverlay.classList.remove("hidden");
   UI.mobileOverlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("no-scroll");
+  void lockMobileLandscapeIfSupported();
 }
 
 function closeMobileOverlay() {
@@ -790,6 +972,7 @@ function closeMobileOverlay() {
   UI.mobileOverlay.classList.add("hidden");
   UI.mobileOverlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("no-scroll");
+  unlockMobileLandscapeIfSupported();
 }
 
 function handleMobileOctDown(direction) {
@@ -935,6 +1118,14 @@ function bindControlButtons() {
     }
   });
 
+  UI.genderSelect.addEventListener("change", () => {
+    queueWarmupForCurrentSelection("gender-change");
+  });
+
+  UI.keySelect.addEventListener("change", () => {
+    queueWarmupForCurrentSelection("key-change");
+  });
+
   UI.octUpButton.addEventListener("click", () => {
     STATE.touchOctaveShift = Math.min(2, STATE.touchOctaveShift + 1);
     updateTouchOctaveLabel();
@@ -1037,6 +1228,8 @@ async function init() {
   bindTouchKeys();
   bindControlButtons();
   bindKeypadOctaveButtons();
+  window.addEventListener("resize", updateMobileLandscapeFallback);
+  window.addEventListener("orientationchange", updateMobileLandscapeFallback);
   updateTouchOctaveLabel();
   updateSustainState();
   updateDebugInfo();
